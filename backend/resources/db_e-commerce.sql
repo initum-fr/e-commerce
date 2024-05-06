@@ -7,7 +7,7 @@ USE `db_e-commerce`;
 CREATE TABLE `users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
-    `email` varchar(255) NOT NULL,
+    `email` varchar(255) NOT NULL UNIQUE,
     `password` varchar(255) NOT NULL,
     `role` enum('admin', 'user') NOT NULL DEFAULT 'user',
     `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
