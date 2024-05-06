@@ -8,5 +8,6 @@ const productCtrl = require('../controllers/product');
 
 router.post('/', productCtrl.createProduct);
 router.get('/', productCtrl.getAllProducts);
+router.get('/:id', productCtrl.getOneProduct);
 
 module.exports = router;

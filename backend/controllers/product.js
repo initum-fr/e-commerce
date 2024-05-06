@@ -23,3 +23,16 @@ exports.getAllProducts = (req, res) => {
         res.status(200).json(result)
     })
 }
+
+exports.getOneProduct = (req, res) => {
+    var sql = `SELECT * FROM products WHERE id = ${req.params.id}`
+    db.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
+        }
+        if (result.length == 0) {
+            return res.status(404).json({ message: 'Product not found!' })
+        }
+        res.status(200).json(result[0])
+    })
+}
