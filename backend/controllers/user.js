@@ -1,7 +1,7 @@
 const db = require('../config/db.js')
 const bcrypt = require('bcrypt')
 
-exports.createUser = (req, res) => {
+exports.register = (req, res) => {
     // Hash the password
     hashedPassword = bcrypt.hashSync(req.body.password, 10)
     var sql = `INSERT INTO users(name, email, password, role) VALUES ('${req.body.name}', '${req.body.email}', '${hashedPassword}', '${req.body.role}')`
