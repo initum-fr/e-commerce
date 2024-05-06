@@ -12,6 +12,7 @@ app.use(express.json());
 
 // import routes
 const userRoutes = require('./routes/user');
+const productRoutes = require('./routes/product');
 
 // simple middleware
 app.get('/', (req, res) => {
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/users', userRoutes);
+app.use('/products', productRoutes);
 
 // export the express app
 module.exports = app;
