@@ -13,3 +13,13 @@ exports.createProduct = (req, res) => {
         })
     }
 }
+
+exports.getAllProducts = (req, res) => {
+    var sql = `SELECT * FROM products`
+    db.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
+        }
+        res.status(200).json(result)
+    })
+}
