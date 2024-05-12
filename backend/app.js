@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 // import routes
-const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
 
 // simple middleware
@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
     res.json({ message: 'Hello World!' });
 })
 
-app.use('/users', userRoutes);
+app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 
 // export the express app
