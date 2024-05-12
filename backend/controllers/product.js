@@ -38,6 +38,17 @@ exports.getOneProduct = (req, res) => {
     })
 }
 
+exports.updateProduct = (req, res) => {
+    var sql = `UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?`;
+    const values = [req.body.name, req.body.price, req.body.description, req.params.id]
+    db.query(sql, values, (err, result) => {
+        if (err) {
+            return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
+        }
+        res.status(200).json({ message: 'Product updated!' })
+    })
+}
+
 exports.deleteProduct = (req, res) => {
     var sql = `SELECT * FROM products WHERE id = ?`
     db.query(sql, [req.params.id], (err, result) => {
