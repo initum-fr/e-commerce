@@ -1,6 +1,9 @@
 const db = require('../config/db.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+dotenv.config({ path: '../config/.env' })
+let p = process.env
 
 exports.register = (req, res) => {
     // Hash the password
@@ -38,7 +41,7 @@ exports.login = (req, res) => {
         if (bcrypt.compareSync(req.body.password, result[0].password)) {
             const token = jwt.sign({
                 email: result[0].email, userId: result[0].id
-            }, 'SECRET_KEY', { expiresIn: '48h' })
+            }, p.JWT_SECRET, { expiresIn: '48h' })
             return res.status(200).json({ token })
         }
         return res.status(401).json({ message: 'Auth failed' })

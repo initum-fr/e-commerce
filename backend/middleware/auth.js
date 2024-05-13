@@ -1,10 +1,13 @@
 const db = require('../config/db')
 const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+dotenv.config({ path: '../config/.env' })
+let p = process.env
 
 exports.admin = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];
-        const decodedToken = jwt.verify(token, 'SECRET_KEY');
+        const decodedToken = jwt.verify(token, p.JWT_SECRET);
         const email = decodedToken.email;
         db.query('SELECT role FROM users WHERE email = ?', [email], (err, result) => {
             if (err) {
@@ -26,7 +29,7 @@ exports.admin = (req, res, next) => {
 exports.currentUser = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];
-        const decodedToken = jwt.verify(token, 'SECRET_KEY');
+        const decodedToken = jwt.verify(token, p.JWT_SECRET);
         const userId = decodedToken.userId;
         console.log(userId);
         db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
