@@ -31,7 +31,6 @@ exports.currentUser = (req, res, next) => {
         const token = req.headers.authorization.split(" ")[1];
         const decodedToken = jwt.verify(token, p.JWT_SECRET);
         const userId = decodedToken.userId;
-        console.log(userId);
         db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
             if (err) {
                 return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
