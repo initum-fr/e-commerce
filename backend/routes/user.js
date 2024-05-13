@@ -6,9 +6,9 @@ const userCtrl = require('../controllers/user');
 
 const auth = require('../middleware/auth');
 
-router.get('/', auth, userCtrl.getAllUsers);
-router.get('/:id', auth, userCtrl.getOneUser)
-router.put('/:id', auth, userCtrl.updateUser)
-router.delete('/:id', auth, userCtrl.deleteUser)
+router.get('/', auth.admin, userCtrl.getAllUsers);
+router.get('/:id', auth.currentUser, userCtrl.getOneUser)
+router.put('/:id', auth.currentUser, userCtrl.updateUser)
+router.delete('/:id', auth.currentUser, userCtrl.deleteUser)
 
 module.exports = router;
