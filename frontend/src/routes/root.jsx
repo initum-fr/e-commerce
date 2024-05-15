@@ -2,11 +2,6 @@ import { Link, Outlet } from 'react-router-dom'
 
 export default function Root() {
     const title = 'GLOVER'
-    const navigation = [
-        { name: 'products', url: 'products' },
-        { name: 'about', url: 'about' },
-        { name: 'contact', url: 'contact' },
-    ]
     return (
         <>
             <header className="mx-auto bg-black">
