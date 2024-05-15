@@ -13,7 +13,7 @@ export default function Root() {
                     </div>
 
                     <div className="justify-self-center text-2xl">
-                        <span className="font-bold">{title}</span>
+                        <Link className="font-bold">{title}</Link>
                     </div>
                     <Link to='/login' className="flex justify-self-end hover:underline">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
