@@ -11,6 +11,7 @@ import {
 
 // pages import
 import Home from './pages/Home';
+import Shop from './pages/Shop';
 import Root from './routes/root';
 
 const router = createBrowserRouter(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
     >
       <Route index element={<Navigate to='home' />} />
       <Route path="home" element={<Home />} />
+      <Route path="shop" element={<Shop />} />
     </Route>
   )
 );
