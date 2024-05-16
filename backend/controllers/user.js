@@ -25,9 +25,9 @@ exports.getOneUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-    var sql = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
+    var sql = `UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ? WHERE id = ?`;
     req.body.password ? hashedPassword = bcrypt.hashSync(req.body.password, 10) : res.status(400).json({ message: 'Invalid password!' })
-    const values = [req.body.name, req.body.email, hashedPassword, req.params.id]
+    const values = [req.body.firstname, req.body.lastname, req.body.email, hashedPassword, req.params.id]
     db.query(sql, values, (err, result) => {
         if (err) {
             return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
