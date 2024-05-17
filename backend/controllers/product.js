@@ -4,9 +4,8 @@ exports.createProduct = (req, res) => {
     if (req.body.name == undefined || req.body.description == undefined || req.body.price == undefined) {
         return res.status(400).json({ message: 'All fields are required!' })
     } else {
-        var sql = `INSERT INTO products(name, description, price) VALUES ?`
-        const values = [[req.body.name, req.body.description, req.body.price],]
-        db.query(sql, [values], (err) => {
+        var sql = `INSERT INTO products(name, description, price, type_id) VALUES (?, ?, ?, ?)`
+        db.query(sql, [req.body.name, req.body.description, req.body.price, req.body.type_id], (err) => {
             if (err) {
                 return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
             }
@@ -39,8 +38,8 @@ exports.getOneProduct = (req, res) => {
 }
 
 exports.updateProduct = (req, res) => {
-    var sql = `UPDATE products SET name = ?, price = ?, description = ? WHERE id = ?`;
-    const values = [req.body.name, req.body.price, req.body.description, req.params.id]
+    var sql = `UPDATE products SET name = ?, price = ?, description = ?, type_id = ? WHERE id = ?`;
+    const values = [req.body.name, req.body.price, req.body.description, req.body.type_id, req.params.id]
     db.query(sql, values, (err, result) => {
         if (err) {
             return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
