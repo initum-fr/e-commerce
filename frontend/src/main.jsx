@@ -15,6 +15,7 @@ import Shop from './pages/Shop';
 import Root from './routes/root';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Error from './pages/Error';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       path="/"
       element={<Root />}
     >
+      <Route path="*" element={<Error />} />
       <Route index element={<Navigate to='home' />} />
       <Route path="home" element={<Home />} />
       <Route path="shop" element={<Shop />} />
