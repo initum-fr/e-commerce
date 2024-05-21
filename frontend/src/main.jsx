@@ -17,6 +17,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Error from './pages/Error';
 import Profile from './pages/Profile';
+import Logout from './pages/Logout';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route path="profile" element={<Profile />} />
+      <Route path="logout" element={<Logout />} />
     </Route>
   )
 );
