@@ -2,7 +2,7 @@ const db = require('../config/db');
 const bcrypt = require('bcrypt');
 
 exports.getAllUsers = (req, res) => {
-    var sql = `SELECT * FROM users`
+    var sql = `SELECT id, firstname, lastname, email, created_at, updated_at FROM users`
     db.query(sql, (err, result) => {
         if (err) {
             return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
@@ -12,7 +12,7 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.getOneUser = (req, res) => {
-    var sql = `SELECT * FROM users WHERE id = ?`
+    var sql = `SELECT id, firstname, lastname, email, created_at, updated_at FROM users WHERE id = ?`
     db.query(sql, [req.params.id], (err, result) => {
         if (err) {
             return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
@@ -25,9 +25,14 @@ exports.getOneUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-    var sql = `UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ? WHERE id = ?`;
-    req.body.password ? hashedPassword = bcrypt.hashSync(req.body.password, 10) : res.status(400).json({ message: 'Invalid password!' })
-    const values = [req.body.firstname, req.body.lastname, req.body.email, hashedPassword, req.params.id]
+    if (req.body.password != undefined) {
+        hashedPassword = bcrypt.hashSync(req.body.password, 10)
+        var sql = `UPDATE users SET firstname = ?, lastname = ?, email = ?, password = '${hashedPassword}' WHERE id = ?`
+
+    } else {
+        var sql = `UPDATE users SET firstname = ?, lastname = ?, email = ? WHERE id = ?`
+    }
+    const values = [req.body.firstname, req.body.lastname, req.body.email, req.params.id]
     db.query(sql, values, (err, result) => {
         if (err) {
             return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
