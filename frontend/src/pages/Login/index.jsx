@@ -11,7 +11,8 @@ export default function Login() {
             .then((response) => {
                 if (response.status === 200) {
                     localStorage.setItem('token', response.data.token);
-                    navigate('/shop', { replace: true });
+                    localStorage.setItem('userId', response.data.userId);
+                    navigate('/profile', { replace: true });
                 }
             })
             .catch(() => {
