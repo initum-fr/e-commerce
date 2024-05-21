@@ -16,6 +16,7 @@ import Root from './routes/root';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Error from './pages/Error';
+import Profile from './pages/Profile';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
       <Route path="shop" element={<Shop />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="profile" element={<Profile />} />
     </Route>
   )
 );
