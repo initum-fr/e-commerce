@@ -25,12 +25,15 @@ exports.getOneUser = (req, res) => {
 }
 
 exports.updateUser = (req, res) => {
-    if (req.body.password != undefined) {
+    console.log("here :", req.body.password)
+    let sql = ``
+    if (req.body.password != "" && req.body.password != undefined) {
+        console.log('i detected a password')
         hashedPassword = bcrypt.hashSync(req.body.password, 10)
-        var sql = `UPDATE users SET firstname = ?, lastname = ?, email = ?, password = '${hashedPassword}' WHERE id = ?`
-
+        sql = `UPDATE users SET firstname = ?, lastname = ?, email = ?, password = '${hashedPassword}' WHERE id = ?`
     } else {
-        var sql = `UPDATE users SET firstname = ?, lastname = ?, email = ? WHERE id = ?`
+        console.log('i does not detected a password')
+        sql = `UPDATE users SET firstname = ?, lastname = ?, email = ? WHERE id = ?`
     }
     const values = [req.body.firstname, req.body.lastname, req.body.email, req.params.id]
     db.query(sql, values, (err, result) => {
