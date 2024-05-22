@@ -2,6 +2,8 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+import Label from "../../components/Label"
+
 export default function Profile() {
     const [userInformations, setUserInformations] = useState({})
     const navigate = useNavigate()
@@ -44,9 +46,7 @@ export default function Profile() {
 
                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-3">
-                                    <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                        First name
-                                    </label>
+                                    <Label htmlFor="first-name" label="First name" />
                                     <div className="mt-2">
                                         <input
                                             value={userInformations.firstname}
@@ -61,9 +61,7 @@ export default function Profile() {
                                 </div>
 
                                 <div className="sm:col-span-3">
-                                    <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                        Last name
-                                    </label>
+                                    <Label htmlFor="last-name" label="Last name" />
                                     <div className="mt-2">
                                         <input
                                             value={userInformations.lastname}
@@ -78,9 +76,7 @@ export default function Profile() {
                                 </div>
 
                                 <div className="sm:col-span-4">
-                                    <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                        Email address
-                                    </label>
+                                    <Label htmlFor="email" label="Email address" />
                                     <div className="mt-2">
                                         <input
                                             value={userInformations.email}
@@ -94,11 +90,8 @@ export default function Profile() {
                                     </div>
                                 </div>
                                 <div className="sm:col-span-4">
-                                    <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                                        New Password <span className="text-gray-600">(if you want to change it)</span>
-                                    </label>
+                                    <Label htmlFor="password" label="New Password (optional)" />
                                     <div className="mt-2">
-                                        {/* <button className="flex justify-center rounded-md bg-red-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" onClick={e => e.preventDefault()}>Modify my password</button> */}
                                         <input
                                             value={userInformations.password}
                                             onChange={(e) => setUserInformations({ ...userInformations, password: e.target.value })}
