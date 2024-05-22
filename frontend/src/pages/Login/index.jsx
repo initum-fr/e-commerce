@@ -12,7 +12,11 @@ export default function Login() {
                 if (response.status === 200) {
                     localStorage.setItem('token', response.data.token);
                     localStorage.setItem('userId', response.data.userId);
-                    navigate('/profile', { replace: true });
+                    if (response.data.role === 'admin') {
+                        navigate('/admin', { replace: true })
+                    } else {
+                        navigate('/profile', { replace: true });
+                    }
                 }
             })
             .catch(() => {
