@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import Label from "../../components/Label"
+import Input from "../../components/Input"
 
 export default function Profile() {
     const [userInformations, setUserInformations] = useState({})
@@ -48,14 +49,13 @@ export default function Profile() {
                                 <div className="sm:col-span-3">
                                     <Label htmlFor="first-name" label="First name" />
                                     <div className="mt-2">
-                                        <input
-                                            value={userInformations.firstname}
-                                            onChange={(e) => setUserInformations({ ...userInformations, firstname: e.target.value })}
+                                        <Input
                                             type="text"
                                             name="first-name"
                                             id="first-name"
-                                            autoComplete="given-name"
-                                            className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="John"
+                                            value={userInformations.firstname}
+                                            onChange={(e) => setUserInformations({ ...userInformations, firstname: e.target.value })}
                                         />
                                     </div>
                                 </div>
@@ -63,14 +63,13 @@ export default function Profile() {
                                 <div className="sm:col-span-3">
                                     <Label htmlFor="last-name" label="Last name" />
                                     <div className="mt-2">
-                                        <input
-                                            value={userInformations.lastname}
-                                            onChange={(e) => setUserInformations({ ...userInformations, lastname: e.target.value })}
+                                        <Input
                                             type="text"
                                             name="last-name"
                                             id="last-name"
-                                            autoComplete="family-name"
-                                            className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            placeholder="Doe"
+                                            value={userInformations.lastname}
+                                            onChange={(e) => setUserInformations({ ...userInformations, lastname: e.target.value })}
                                         />
                                     </div>
                                 </div>
@@ -78,28 +77,26 @@ export default function Profile() {
                                 <div className="sm:col-span-4">
                                     <Label htmlFor="email" label="Email address" />
                                     <div className="mt-2">
-                                        <input
+                                        <Input
+                                            type="email"
+                                            name="email"
+                                            id="email"
+                                            placeholder="email@example.com"
                                             value={userInformations.email}
                                             onChange={(e) => setUserInformations({ ...userInformations, email: e.target.value })}
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            autoComplete="email"
-                                            className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
                                 </div>
                                 <div className="sm:col-span-4">
                                     <Label htmlFor="password" label="New Password (optional)" />
                                     <div className="mt-2">
-                                        <input
+                                        <Input
+                                            type="password"
+                                            name="password"
+                                            id="password"
+                                            placeholder="********"
                                             value={userInformations.password}
                                             onChange={(e) => setUserInformations({ ...userInformations, password: e.target.value })}
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            autoComplete="password"
-                                            className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
                                 </div>
