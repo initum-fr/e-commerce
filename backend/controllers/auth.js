@@ -41,7 +41,7 @@ exports.login = (req, res) => {
             const token = jwt.sign({
                 email: result[0].email, userId: result[0].id
             }, p.JWT_SECRET, { expiresIn: '1h' })
-            return res.status(200).json({ message: 'Auth successful', token: token, userId: result[0].id })
+            return res.status(200).json({ message: 'Auth successful', token: token, userId: result[0].id, role: result[0].role })
         }
         return res.status(401).json({ message: 'Auth failed' })
     })
