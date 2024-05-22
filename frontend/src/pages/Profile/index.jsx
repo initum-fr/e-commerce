@@ -1,8 +1,10 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function Profile() {
     const [userInformations, setUserInformations] = useState({})
+    const navigate = useNavigate()
     const onSubmitNewInfos = (e) => {
         e.preventDefault();
         console.log("onSubmitNewInfos", userInformations)
@@ -20,8 +22,8 @@ export default function Profile() {
                 console.log(response.data)
                 setUserInformations(response.data)
             })
-            .catch((err) => {
-                console.log(err)
+            .catch(() => {
+                navigate('/logout')
             })
     }, [])
     return (
