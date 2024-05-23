@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import createStore from 'react-auth-kit/createStore';
 import AuthProvider from 'react-auth-kit';
+import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 
 // pages import
 import Home from './pages/Home';
@@ -21,7 +22,7 @@ import Error from './pages/Error';
 import Profile from './pages/Profile';
 import Logout from './pages/Logout';
 import Admin from './pages/Admin';
-import PrivateRoute from './components/PrivateRoute';
+// import PrivateRoute from './components/PrivateRoute';
 
 const store = createStore({
   authName: '_auth',
@@ -43,7 +44,7 @@ const router = createBrowserRouter(
       <Route path="shop" element={<Shop />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-      <Route element={<PrivateRoute />}>
+      <Route element={<AuthOutlet fallbackPath='/login' />}>
         <Route path="profile" element={<Profile />} />
         <Route path="admin" element={<Admin />} />
       </Route>
