@@ -23,6 +23,7 @@ import Profile from './pages/Profile';
 import Logout from './pages/Logout';
 import Admin from './pages/Admin';
 import AdminRoute from './components/AdminRoute';
+import AdminUsers from './pages/AdminUsers';
 // import PrivateRoute from './components/PrivateRoute';
 
 const store = createStore({
@@ -50,7 +51,10 @@ const router = createBrowserRouter(
         <Route path="profile" element={<Profile />} />
         {/* Only for admin users */}
         <Route element={<AdminRoute />}>
-          <Route path="admin" element={<Admin />} />
+          <Route path="admin" >
+            <Route index element={<Admin />} />
+            <Route path="users" element={<AdminUsers />} />
+          </Route>
         </Route>
       </Route>
       <Route path="logout" element={<Logout />} />

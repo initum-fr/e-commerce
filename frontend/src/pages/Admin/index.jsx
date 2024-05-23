@@ -7,22 +7,22 @@ const navigations = [
     {
         name: 'Users',
         description: 'CRUD operations on users',
-        to: 'admin/users',
+        to: 'users',
     },
     {
         name: 'Products',
         description: 'CRUD operations on products',
-        to: 'admin/products',
+        to: 'products',
     },
     {
         name: 'Orders',
         description: 'CRUD operations on orders',
-        to: 'admin/orders',
+        to: 'orders',
     },
     {
         name: 'Categories',
         description: 'CRUD operations on categories',
-        to: 'admin/categories',
+        to: 'categories',
     },
 ]
 
