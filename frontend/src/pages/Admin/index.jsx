@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
 
 const navigations = [
     {
@@ -26,9 +27,10 @@ const navigations = [
 ]
 
 export default function Admin() {
+    const authHeader = useAuthHeader()
     const navigate = useNavigate()
     useEffect(() => {
-        axios.post('http://localhost:8000/auth/verify', {}, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+        axios.post('http://localhost:8000/auth/verify', {}, { headers: { Authorization: authHeader } })
             .then((response) => {
                 if (response.data.role != 'admin') {
                     navigate('/logout')

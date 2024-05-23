@@ -8,6 +8,8 @@ import {
   RouterProvider,
   Navigate,
 } from 'react-router-dom';
+import createStore from 'react-auth-kit/createStore';
+import AuthProvider from 'react-auth-kit';
 
 // pages import
 import Home from './pages/Home';
@@ -19,9 +21,18 @@ import Error from './pages/Error';
 import Profile from './pages/Profile';
 import Logout from './pages/Logout';
 import Admin from './pages/Admin';
+import PrivateRoute from './components/PrivateRoute';
+
+const store = createStore({
+  authName: '_auth',
+  authType: 'cookie',
+  cookieDomain: window.location.hostname,
+  cookieSecure: window.location.protocol === 'https:',
+});
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+
     <Route
       path="/"
       element={<Root />}
@@ -32,15 +43,20 @@ const router = createBrowserRouter(
       <Route path="shop" element={<Shop />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-      <Route path="profile" element={<Profile />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="profile" element={<Profile />} />
+        <Route path="admin" element={<Admin />} />
+      </Route>
       <Route path="logout" element={<Logout />} />
-      <Route path="admin" element={<Admin />} />
     </Route>
+
   )
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider store={store}>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 )

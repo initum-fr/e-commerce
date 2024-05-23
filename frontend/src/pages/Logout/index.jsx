@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
 
 export default function Logout() {
+    const signOut = useSignOut()
     const navigate = useNavigate();
     useEffect(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
+        signOut()
         navigate('/login', { replace: true });
     })
     return (

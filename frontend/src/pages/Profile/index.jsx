@@ -1,17 +1,21 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 
 import Label from "../../components/Label"
 import Input from "../../components/Input"
 
 export default function Profile() {
     const [userInformations, setUserInformations] = useState({})
+    const authHeader = useAuthHeader()
+    const auth = useAuthUser()
     const navigate = useNavigate()
     const onSubmitNewInfos = (e) => {
         e.preventDefault();
         console.log("onSubmitNewInfos", userInformations)
-        axios.put(`http://localhost:8000/users/${localStorage.getItem('userId')}`, userInformations, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+        axios.put(`http://localhost:8000/users/${auth.user.id}`, userInformations, { headers: { Authorization: authHeader } })
             .then((response) => {
                 console.log(response)
             })
@@ -20,7 +24,7 @@ export default function Profile() {
             })
     }
     useEffect(() => {
-        axios.get(`http://localhost:8000/users/${localStorage.getItem('userId')}`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+        axios.get(`http://localhost:8000/users/${auth.user.id}`, { headers: { Authorization: authHeader } })
             .then((response) => {
                 console.log(response.data)
                 setUserInformations(response.data)

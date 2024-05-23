@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
 export default function Login() {
+    const signIn = useSignIn()
     const navigate = useNavigate();
     const onLogin = (event) => {
         event.preventDefault();
@@ -10,12 +12,21 @@ export default function Login() {
         axios.post('http://localhost:8000/auth/login', userData)
             .then((response) => {
                 if (response.status === 200) {
-                    localStorage.setItem('token', response.data.token);
-                    localStorage.setItem('userId', response.data.userId);
-                    if (response.data.role === 'admin') {
-                        navigate('/admin', { replace: true })
+                    if (signIn({
+                        auth: { token: response.data.token, type: 'Bearer' },
+                        userState: { user: { role: response.data.role, id: response.data.userId } }
+                    })) {
+                        if (
+                            response.data.role == 'admin'
+                        ) {
+                            navigate('/admin', { replace: true });
+                        } else {
+                            navigate('/profile', { replace: true });
+                        }
+
                     } else {
-                        navigate('/profile', { replace: true });
+                        document.getElementById('alert-container').innerHTML = `
+                        <p class="text-center text-red-500 text-xs font-bold">Please enter a valid username and password.</p>`
                     }
                 }
             })
