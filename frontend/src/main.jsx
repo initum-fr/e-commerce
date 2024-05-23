@@ -18,6 +18,7 @@ import Register from './pages/Register';
 import Error from './pages/Error';
 import Profile from './pages/Profile';
 import Logout from './pages/Logout';
+import Admin from './pages/Admin';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route path="register" element={<Register />} />
       <Route path="profile" element={<Profile />} />
       <Route path="logout" element={<Logout />} />
+      <Route path="admin" element={<Admin />} />
     </Route>
   )
 );
