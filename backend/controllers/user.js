@@ -2,7 +2,7 @@ const db = require('../config/db');
 const bcrypt = require('bcrypt');
 
 exports.getAllUsers = (req, res) => {
-    var sql = `SELECT id, firstname, lastname, email, created_at, updated_at FROM users`
+    var sql = `SELECT id, firstname, lastname, role,  email, created_at, updated_at FROM users`
     db.query(sql, (err, result) => {
         if (err) {
             return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
