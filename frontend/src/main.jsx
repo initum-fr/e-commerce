@@ -22,6 +22,7 @@ import Error from './pages/Error';
 import Profile from './pages/Profile';
 import Logout from './pages/Logout';
 import Admin from './pages/Admin';
+import AdminRoute from './components/AdminRoute';
 // import PrivateRoute from './components/PrivateRoute';
 
 const store = createStore({
@@ -44,9 +45,13 @@ const router = createBrowserRouter(
       <Route path="shop" element={<Shop />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      {/* Only for logged users */}
       <Route element={<AuthOutlet fallbackPath='/login' />}>
         <Route path="profile" element={<Profile />} />
-        <Route path="admin" element={<Admin />} />
+        {/* Only for admin users */}
+        <Route element={<AdminRoute />}>
+          <Route path="admin" element={<Admin />} />
+        </Route>
       </Route>
       <Route path="logout" element={<Logout />} />
     </Route>

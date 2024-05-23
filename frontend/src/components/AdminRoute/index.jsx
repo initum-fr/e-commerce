@@ -1,9 +1,11 @@
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import { Navigate, Outlet } from 'react-router-dom'
 
-export default function PrivateRoute() {
+export default function AdminRoute() {
     const isAuthenticated = useIsAuthenticated()
-    if (isAuthenticated) {
+    const auth = useAuthUser()
+    if (isAuthenticated && auth.user.role == 'admin') {
         return (<Outlet />)
     }
     else {
