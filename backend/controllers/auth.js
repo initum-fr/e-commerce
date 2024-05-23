@@ -46,3 +46,22 @@ exports.login = (req, res) => {
         return res.status(401).json({ message: 'Auth failed' })
     })
 }
+
+exports.verify = (req, res) => {
+    try {
+        console.log(req.headers['Authorization'])
+        const token = req.headers.authorization.split(" ")[1];
+
+        const decodedToken = jwt.verify(token, p.JWT_SECRET);
+        const userId = decodedToken.userId;
+        db.query('SELECT role FROM users WHERE id = ?', [userId], (err, result) => {
+            if (err || result.length == 0) {
+                return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
+            } else {
+                return res.status(200).json({ role: result[0].role })
+            }
+        })
+    } catch (e) {
+        res.status(403).json({ message: 'Authentication failed' })
+    }
+}
