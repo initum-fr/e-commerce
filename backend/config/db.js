@@ -1,27 +1,11 @@
-// import mysql
-const mysql = require('mysql')
-const dotenv = require('dotenv')
-
-// load environment variables
+const dotenv = require('dotenv');
+dotenv.config();
 dotenv.config({ path: __dirname + '\\.env' })
-let p = process.env
+let p = process.env;
 
-// create a connection to the database
-const db = mysql.createConnection({
-    // mysql infos
-    host: p.MYSQL_HOST,
-    port: p.MYSQL_PORT,
-    user: p.MYSQL_USER,
-    password: p.MYSQL_PASSWORD,
+const mongoose = require('mongoose');
 
-    // database infos
-    database: p.DB_NAME,
-})
-
-try {
-    db.connect((err) => err ? console.error(`${err.code}: ${err.sqlMessage}`) : console.log(`Connected to database successfully!`))
-} catch (error) {
-    console.error('Database connection failed:', error)
-}
-
-module.exports = db
+mongoose.connect(
+    `mongodb+srv://${p.MONGODB_USER}:${p.MONGODB_PASSWORD}@${p.MONGODB_HOST}/?retryWrites=true&w=majority&appName=${p.MONGODB_APPNAME}`)
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
