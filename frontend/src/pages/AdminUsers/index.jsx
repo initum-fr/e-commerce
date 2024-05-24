@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
+import { Link } from "react-router-dom"
 
 export default function AdminUsers() {
     const authHeader = useAuthHeader()
@@ -33,7 +34,7 @@ export default function AdminUsers() {
             <div className="bg-white py-12 mx-10">
                 <h1 className="text-2xl font-bold mb-4">Admin Users</h1>
                 <p className="text-gray-500">List of all users in the admin panel.</p>
-                <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mt-4">
+                <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mt-8">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
@@ -89,9 +90,9 @@ export default function AdminUsers() {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                            <Link to={`${user.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                                                 Edit
-                                            </button>
+                                            </Link>
                                             <button onClick={() => onDelete(user)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                                 Delete
                                             </button>
@@ -103,6 +104,9 @@ export default function AdminUsers() {
                     </table>
                 </div >
             </div>
+            <Link className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right mt-4 mr-10">
+                Add User
+            </Link>
         </>
     )
 }

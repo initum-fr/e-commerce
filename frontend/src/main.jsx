@@ -24,6 +24,7 @@ import Logout from './pages/Logout';
 import Admin from './pages/Admin';
 import AdminRoute from './components/AdminRoute';
 import AdminUsers from './pages/AdminUsers';
+import AdminUser from './pages/AdminUser';
 // import PrivateRoute from './components/PrivateRoute';
 
 const store = createStore({
@@ -53,7 +54,10 @@ const router = createBrowserRouter(
         <Route element={<AdminRoute />}>
           <Route path="admin" >
             <Route index element={<Admin />} />
-            <Route path="users" element={<AdminUsers />} />
+            <Route path="users">
+              <Route index element={<AdminUsers />} />
+              <Route path=":userId" element={<AdminUser />} />
+            </Route>
           </Route>
         </Route>
       </Route>
