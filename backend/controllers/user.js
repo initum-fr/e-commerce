@@ -12,7 +12,7 @@ exports.getAllUsers = (req, res) => {
 }
 
 exports.getOneUser = (req, res) => {
-    var sql = `SELECT id, firstname, lastname, email, created_at, updated_at FROM users WHERE id = ?`
+    var sql = `SELECT id, firstname, lastname, email, role, created_at, updated_at FROM users WHERE id = ?`
     db.query(sql, [req.params.id], (err, result) => {
         if (err) {
             return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
