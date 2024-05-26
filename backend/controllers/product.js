@@ -1,66 +1,35 @@
-const db = require('../config/db.js')
+const Product = require('../models/product');
 
-exports.createProduct = (req, res) => {
-    if (req.body.name == undefined || req.body.description == undefined || req.body.price == undefined) {
-        return res.status(400).json({ message: 'All fields are required!' })
-    } else {
-        var sql = `INSERT INTO products(name, description, price, type_id) VALUES (?, ?, ?, ?)`
-        db.query(sql, [req.body.name, req.body.description, req.body.price, req.body.type_id], (err) => {
-            if (err) {
-                return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
-            }
-            res.status(201).json({ message: 'Product created!' })
-        })
-    }
+exports.getAllProducts = (req, res, next) => {
+    Product.find()
+        .then(products => res.status(200).json(products))
+        .catch(error => res.status(400).json({ error }));
 }
 
-exports.getAllProducts = (req, res) => {
-    var sql = `SELECT * FROM products`
-    db.query(sql, (err, result) => {
-        if (err) {
-            return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
-        }
-        res.status(200).json(result)
-    })
+exports.getOneProduct = (req, res, next) => {
+    Product.findOne({ _id: req.params.id })
+        .then(product => res.status(200).json(product))
+        .catch(error => res.status(404).json({ error }));
 }
 
-exports.getOneProduct = (req, res) => {
-    var sql = `SELECT * FROM products WHERE id = ?`
-    db.query(sql, [req.params.id], (err, result) => {
-        if (err) {
-            return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
-        }
-        if (result.length == 0) {
-            return res.status(404).json({ message: 'Product not found!' })
-        }
-        res.status(200).json(result[0])
-    })
+exports.createProduct = (req, res, next) => {
+    delete req.body._id;
+    const product = new Product({
+        ...req.body
+    });
+    product.save()
+        .then(() => res.status(201).json({ message: 'Product created!' }))
+        .catch(error => res.status(400).json({ error }));
 }
 
-exports.updateProduct = (req, res) => {
-    var sql = `UPDATE products SET name = ?, price = ?, description = ?, type_id = ? WHERE id = ?`;
-    const values = [req.body.name, req.body.price, req.body.description, req.body.type_id, req.params.id]
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
-        }
-        res.status(200).json({ message: 'Product updated!' })
-    })
+exports.updateProduct = (req, res, next) => {
+    Product.updateOne({ _id: req.params.id }, { ...req.body })
+        .then(() => res.status(200).json({ message: 'Product updated!' }))
+        .catch(error => res.status(400).json({ error }))
 }
 
-exports.deleteProduct = (req, res) => {
-    var sql = `SELECT * FROM products WHERE id = ?`
-    db.query(sql, [req.params.id], (err, result) => {
-        if (result.length > 0) {
-            var sql = `DELETE FROM products WHERE id = ?`
-            db.query(sql, [req.params.id], (err) => {
-                if (err) {
-                    return res.status(500).json({ "error": { code: err.code, message: err.sqlMessage } })
-                }
-                return res.status(200).json({ message: 'Product deleted!' })
-            })
-        } else {
-            return res.status(404).json({ message: 'Product not found!' })
-        }
-    })
+exports.deleteProduct = (req, res, next) => {
+    Product.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Product deleted!' }))
+        .catch(error => res.status(400).json({ error }))
 }
