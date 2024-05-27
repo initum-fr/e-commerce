@@ -38,3 +38,23 @@ exports.login = (req, res) => {
         })
         .catch(error => res.status(500).json({ error: 'Authentication failded!' }))
 }
+
+exports.verify = (req, res) => {
+    try {
+        console.log("Verifying")
+        const token = req.headers.authorization.split(' ')[1]
+        const decodedToken = jwt.verify(token, p.JWT_SECRET)
+        User.findOne({ _id: decodedToken.userId })
+            .then(user => {
+                if (user) {
+                    res.status(200).json({ role: user.admin ? 'admin' : 'user' })
+                } else {
+                    res.status(404).json({ error: 'User not found!' })
+                }
+            })
+            .catch(error => res.status(500).json({ error: 'User not found!' }))
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid token!' })
+    }
+
+}
