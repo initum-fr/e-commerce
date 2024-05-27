@@ -6,18 +6,23 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 
 export default function AdminUser() {
-    const [userInformations, setUserInformations] = useState({})
     const navigate = useNavigate()
     const authHeader = useAuthHeader()
+
     const { userId } = useParams()
+
+    // states
+    const [userInformations, setUserInformations] = useState({})
+
     useEffect(() => {
         axios.get(`http://localhost:8000/users/${userId}`, { headers: { Authorization: authHeader } })
             .then((response) => {
                 console.log(response.data)
+                delete response.data.password
                 setUserInformations(response.data)
             })
-            .catch(() => {
-                alert('/admin')
+            .catch((error) => {
+                console.log(error.message)
             })
     }, [])
     const onSubmitNewInfos = (e) => {
@@ -76,19 +81,6 @@ export default function AdminUser() {
                                     placeholder="email@example.com"
                                     value={userInformations.email}
                                     onChange={(e) => setUserInformations({ ...userInformations, email: e.target.value })}
-                                />
-                            </div>
-                        </div>
-                        <div className="sm:col-span-4">
-                            <Label htmlFor="password" label="New Password (optional)" />
-                            <div className="mt-2">
-                                <Input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    placeholder="********"
-                                    value={userInformations.password}
-                                    onChange={(e) => setUserInformations({ ...userInformations, password: e.target.value })}
                                 />
                             </div>
                         </div>
