@@ -29,7 +29,8 @@ exports.login = (req, res) => {
                         { userId: user._id },
                         p.JWT_SECRET,
                         { expiresIn: '1h' }
-                    )
+                    ),
+                    role: user.admin ? 'admin' : 'user'
                 })
             } else {
                 res.status(401).json({ error: 'Authentication failded!' })
