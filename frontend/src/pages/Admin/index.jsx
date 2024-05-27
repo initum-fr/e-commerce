@@ -32,12 +32,12 @@ export default function Admin() {
     useEffect(() => {
         axios.post('http://localhost:8000/auth/verify', {}, { headers: { Authorization: authHeader } })
             .then((response) => {
-                if (response.data.role != 'admin') {
-                    navigate('/logout')
+                if (response.data.role == undefined || response.data.role != 'admin') {
+                    navigate('/logout', { replace: true })
                 }
             })
             .catch(() => {
-                navigate('/logout')
+                navigate('/logout', { replace: true })
             })
     }, [])
     return (

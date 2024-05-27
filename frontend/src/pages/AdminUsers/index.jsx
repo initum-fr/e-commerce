@@ -1,11 +1,12 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export default function AdminUsers() {
     const authHeader = useAuthHeader()
     const [users, setUsers] = useState([])
+    const navigate = useNavigate()
     useEffect(() => {
         axios.get('http://localhost:8000/users', { headers: { Authorization: authHeader } })
             .then(response => {
@@ -15,7 +16,7 @@ export default function AdminUsers() {
             })
             .catch((error) => {
                 console.log(error)
-
+                navigate('/logout', { replace: true })
             })
     }, [])
 

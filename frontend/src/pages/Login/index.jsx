@@ -12,18 +12,17 @@ export default function Login() {
         axios.post('http://localhost:8000/auth/login', userData)
             .then((response) => {
                 if (response.status === 200) {
-                    if (signIn({
-                        auth: { token: response.data.token, type: 'Bearer' },
-                        userState: { user: { role: response.data.role, id: response.data.userId } }
-                    })) {
-                        if (
-                            response.data.role == 'admin'
-                        ) {
+                    if (
+                        signIn({
+                            auth: { token: response.data.token, type: 'Bearer' },
+                            userState: { user: { id: response.data.userId, role: response.data.role } }
+                        })
+                    ) {
+                        if (response.data.role == 'admin') {
                             navigate('/admin', { replace: true });
                         } else {
                             navigate('/profile', { replace: true });
                         }
-
                     } else {
                         document.getElementById('alert-container').innerHTML = `
                         <p class="text-center text-red-500 text-xs font-bold">Please enter a valid username and password.</p>`
