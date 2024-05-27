@@ -23,9 +23,18 @@ exports.createProduct = (req, res, next) => {
 }
 
 exports.updateProduct = (req, res, next) => {
-    Product.updateOne({ _id: req.params.id }, { ...req.body })
-        .then(() => res.status(200).json({ message: 'Product updated!' }))
-        .catch(error => res.status(400).json({ error }))
+    Product.findOne({ _id: req.params.id })
+        .then(product => {
+            if (product) {
+                Product.updateOne({ _id: req.params.id }, { ...req.body })
+                    .then(() => res.status(200).json({ message: 'Product updated!' }))
+                    .catch(error => res.status(400).json({ error }))
+            } else {
+                res.status(400).json({ message: 'Product not found!' });
+            }
+        })
+        .catch(error => res.status(400).json({ message: 'Product not found!' }));
+
 }
 
 exports.deleteProduct = (req, res, next) => {
