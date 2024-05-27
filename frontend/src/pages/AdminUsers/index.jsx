@@ -1,30 +1,38 @@
-import axios from "axios"
+// react
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+
+// react-auth-kit
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
-import { Link, useNavigate } from "react-router-dom"
+
+// axios
+import axios from "axios"
+
+// design imports
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid"
 
 export default function AdminUsers() {
     const authHeader = useAuthHeader()
+
     const [users, setUsers] = useState([])
-    const navigate = useNavigate()
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
         axios.get('http://localhost:8000/users', { headers: { Authorization: authHeader } })
-            .then(response => {
-                console.log(response.data)
-                setUsers(response.data)
-
+            .then((res) => {
+                setUsers(res.data)
+                setLoading(false)
             })
             .catch((error) => {
                 console.log(error)
-                navigate('/logout', { replace: true })
             })
-    }, [])
+    })
 
-    function onDelete(user) {
-        axios.delete(`http://localhost:8000/users/${user.id}`, { headers: { Authorization: authHeader } })
+    const onDelete = (user) => {
+        axios.delete(`http://localhost:8000/users/${user._id}`, { headers: { Authorization: authHeader } })
             .then(response => {
                 console.log(response)
-                setUsers(users.filter((u) => u.id !== user.id))
+                setUsers(users.filter((u) => u._id !== user._id))
             })
             .catch((error) => {
                 console.log(error)
@@ -52,13 +60,7 @@ export default function AdminUsers() {
                                     Email
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Role
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Created At
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Updated At
+                                    Admin
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Actions
@@ -66,10 +68,11 @@ export default function AdminUsers() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {users.map((user) => (
-                                <tr key={user.email}>
+                            {loading ? <h1>Loading...</h1> : users.map((user) => (
+
+                                <tr key={user.email} >
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{user.id}</div>
+                                        <div className="text-sm text-gray-900">{user._id}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-900">{user.firstname}</div>
@@ -81,17 +84,16 @@ export default function AdminUsers() {
                                         <div className="text-sm text-gray-900">{user.email}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{user.role}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{user.created_at}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{user.updated_at}</div>
+                                        <div className="text-sm text-gray-900">
+                                            {user.admin ?
+                                                <CheckCircleIcon className="size-6 text-green-800" />
+                                                :
+                                                <XCircleIcon className="size-6 text-red-800" />
+                                            }</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
-                                            <Link to={`${user.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                            <Link to={`${user._id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                                                 Edit
                                             </Link>
                                             <button onClick={() => onDelete(user)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
@@ -104,7 +106,7 @@ export default function AdminUsers() {
                         </tbody>
                     </table>
                 </div >
-            </div>
+            </div >
             <Link className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right mt-4 mr-10">
                 Add User
             </Link>
