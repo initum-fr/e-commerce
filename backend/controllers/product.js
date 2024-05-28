@@ -1,3 +1,4 @@
+const Category = require('../models/category');
 const Product = require('../models/product');
 
 exports.getAllProducts = (req, res, next) => {
@@ -15,21 +16,41 @@ exports.getOneProduct = (req, res, next) => {
 exports.createProduct = (req, res, next) => {
     delete req.body._id;
     let _price = parseFloat(req.body.price);
-    const product = new Product({
-        ...req.body,
-        price: _price.toFixed(2)
-    });
-    product.save()
-        .then(() => res.status(201).json({ message: 'Product created!' }))
-        .catch(error => res.status(400).json({ error }));
+    Category.findOne({ _id: req.body.category })
+        .then(category => {
+            if (!category) {
+                res.status(400).json({ message: 'Category not found!' });
+            } else {
+                const product = new Product({
+                    ...req.body,
+                    price: _price.toFixed(2)
+                });
+                product.save()
+                    .then(() => res.status(201).json({ message: 'Product created!' }))
+                    .catch(error => res.status(400).json({ error }));
+            }
+        })
+        .catch(error => {
+            res.status(400).json({ error })
+        });
+
 }
 
 exports.updateProduct = (req, res, next) => {
+    req.body.category && Category.findOne({ _id: req.body.category }).then((response) => {
+        if (!response) {
+            res.status(400).json({ message: 'Category not found!' });
+        }
+    }).catch(error => {
+        res.status(400).json({ error });
+    })
     Product.findOne({ _id: req.params.id })
         .then(product => {
             if (product) {
-                let _price = parseFloat(req.body.price);
-                Product.updateOne({ _id: req.params.id }, { ...req.body, price: _price.toFixed(2) })
+                if (req.body.price) {
+                    req.body.price = parseFloat(req.body.price).toFixed(2);
+                }
+                Product.updateOne({ _id: req.params.id }, { ...req.body })
                     .then(() => res.status(200).json({ message: 'Product updated!' }))
                     .catch(error => res.status(400).json({ error }))
             } else {
