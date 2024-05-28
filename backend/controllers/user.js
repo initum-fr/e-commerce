@@ -1,6 +1,21 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user')
 
+exports.createUser = (req, res) => {
+    const hash = bcrypt.hashSync(req.body.password, 10)
+    const user = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        password: hash,
+        admin: req.body.admin
+    })
+    user.save()
+        .then(() => res.status(201).json({ message: 'User created!' }))
+        .catch(() => res.status(500).json({ message: 'User not created!' }))
+
+}
+
 exports.getAllUsers = (req, res) => {
     User.find()
         .then(users => res.status(200).json(users))
