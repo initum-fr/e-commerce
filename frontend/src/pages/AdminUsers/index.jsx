@@ -107,7 +107,7 @@ export default function AdminUsers() {
                     </table>
                 </div >
             </div >
-            <Link className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right mt-4 mr-10">
+            <Link to="create" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right mt-4 mr-10">
                 Add User
             </Link>
         </>
