@@ -14,8 +14,10 @@ exports.getOneProduct = (req, res, next) => {
 
 exports.createProduct = (req, res, next) => {
     delete req.body._id;
+    let _price = parseFloat(req.body.price);
     const product = new Product({
-        ...req.body
+        ...req.body,
+        price: _price.toFixed(2)
     });
     product.save()
         .then(() => res.status(201).json({ message: 'Product created!' }))
@@ -26,7 +28,8 @@ exports.updateProduct = (req, res, next) => {
     Product.findOne({ _id: req.params.id })
         .then(product => {
             if (product) {
-                Product.updateOne({ _id: req.params.id }, { ...req.body })
+                let _price = parseFloat(req.body.price);
+                Product.updateOne({ _id: req.params.id }, { ...req.body, price: _price.toFixed(2) })
                     .then(() => res.status(200).json({ message: 'Product updated!' }))
                     .catch(error => res.status(400).json({ error }))
             } else {
