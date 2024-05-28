@@ -25,7 +25,7 @@ export default function Shop() {
                         <div key={`${index}-${product.id}`} className="group relative">
                             <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                                 <img
-                                    src={`https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg`}
+                                    src={product.image ? product.image : `https://placehold.it/300x300?text=`}
                                     alt={product.name}
                                     className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                 />

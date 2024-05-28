@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 
@@ -34,7 +34,7 @@ export default function Profile() {
             })
     }, [])
     return (
-        <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="flex min-h-full flex-1 flex-col justify-center">
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
                 <form className="w-full" onSubmit={e => onSubmitNewInfos(e)}>
                     <div className="space-y-12">
@@ -109,9 +109,9 @@ export default function Profile() {
                     </div>
 
                     <div className="mt-6 flex items-center justify-end gap-x-6">
-                        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                        <Link to='../' type="button" className="text-sm font-semibold leading-6 text-gray-900">
                             Cancel
-                        </button>
+                        </Link>
                         <button
                             type="submit"
                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

@@ -29,6 +29,7 @@ import CreateNewUser from './pages/CreateNewUser';
 import AdminProducts from './pages/AdminProducts';
 import CreateNewProduct from './pages/CreateNewProduct';
 import AdminProduct from './pages/AdminProduct';
+import Product from './pages/Product';
 // import PrivateRoute from './components/PrivateRoute';
 
 const store = createStore({
@@ -48,7 +49,9 @@ const router = createBrowserRouter(
       <Route path="*" element={<Error />} />
       <Route index element={<Navigate to='home' />} />
       <Route path="home" element={<Home />} />
-      <Route path="shop" element={<Shop />} />
+      <Route path="shop">
+        <Route index element={<Shop />} />
+      </Route>
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       {/* Only for logged users */}

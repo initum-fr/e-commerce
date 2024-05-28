@@ -41,25 +41,23 @@ export default function Admin() {
             })
     }, [])
     return (
-        <div className="bg-white py-24 sm:py-32">
-            <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
-                <div className="max-w-2xl">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Dashbord - Admin</h2>
-                    <p className="mt-6 text-lg leading-8 text-gray-600">
-                        You can create, read, update, and delete data from the database.
-                    </p>
-                </div>
-                <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
-                    {navigations.map((nav, index) => (
-                        <Link key={index} to={nav.to} className="flex items-center gap-x-6 rounded-md justify-center text-white bg-gray-600 px-3 py-7">
-                            <div>
-                                <h3 className="text-base font-semibold leading-7 tracking-tight">{nav.name}</h3>
-                                <p className="text-sm leading-6 ">{nav.description}</p>
-                            </div>
-                        </Link>
-                    ))}
-                </ul>
+        <div className="mx-auto grid max-w-7xl gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-3">
+            <div className="max-w-2xl">
+                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Dashbord - Admin</h2>
+                <p className="mt-6 text-lg leading-8 text-gray-600">
+                    You can create, read, update, and delete data from the database.
+                </p>
             </div>
-        </div >
+            <ul role="list" className="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
+                {navigations.map((nav, index) => (
+                    <Link key={index} to={nav.to} className="flex items-center gap-x-6 rounded-md justify-center text-white bg-gray-600 px-3 py-7">
+                        <div>
+                            <h3 className="text-base font-semibold leading-7 tracking-tight">{nav.name}</h3>
+                            <p className="text-sm leading-6 ">{nav.description}</p>
+                        </div>
+                    </Link>
+                ))}
+            </ul>
+        </div>
     )
 }
