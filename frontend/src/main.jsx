@@ -29,7 +29,6 @@ import CreateNewUser from './pages/CreateNewUser';
 import AdminProducts from './pages/AdminProducts';
 import CreateNewProduct from './pages/CreateNewProduct';
 import AdminProduct from './pages/AdminProduct';
-import Product from './pages/Product';
 // import PrivateRoute from './components/PrivateRoute';
 
 const store = createStore({
