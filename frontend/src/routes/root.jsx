@@ -31,7 +31,7 @@ export default function Root() {
                     </div>
                 </nav>
             </header>
-            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
+            <main className="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8 py-20">
                 <Outlet />
             </main>
         </>
