@@ -42,8 +42,8 @@ export default function AdminUsers() {
         <>
             <h1 className="text-2xl font-bold mb-4">Admin Users</h1>
             <p className="text-gray-500">List of all users in the admin panel.</p>
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mt-8">
-                <table className="min-w-full divide-y divide-gray-200">
+            <div className="shadow scroll-m-0 border-b border-gray-200 sm:rounded-lg mt-8 overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 ">
                     <thead className="bg-gray-50">
                         <tr>
                             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
