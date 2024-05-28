@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-export default function Input({ type, name, id, placeholder, required, value, onChange }) {
+export default function Input({ type, name, id, placeholder, required, value, onChange, step }) {
     return (
         <input
             type={type}
@@ -10,6 +10,7 @@ export default function Input({ type, name, id, placeholder, required, value, on
             onChange={onChange}
             className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             required={required}
+            step={step}
         />
     )
 }
@@ -20,5 +21,6 @@ Input.propTypes = {
     placeholder: PropTypes.string.isRequired,
     required: PropTypes.bool,
     value: PropTypes.string,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    step: PropTypes.string
 }
