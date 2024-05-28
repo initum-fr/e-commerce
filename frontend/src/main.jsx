@@ -26,6 +26,7 @@ import AdminRoute from './components/AdminRoute';
 import AdminUsers from './pages/AdminUsers';
 import AdminUser from './pages/AdminUser';
 import CreateNewUser from './pages/CreateNewUser';
+import AdminProducts from './pages/AdminProducts';
 // import PrivateRoute from './components/PrivateRoute';
 
 const store = createStore({
@@ -59,6 +60,11 @@ const router = createBrowserRouter(
               <Route index element={<AdminUsers />} />
               <Route path=":userId" element={<AdminUser />} />
               <Route path="create" element={<CreateNewUser />} />
+            </Route>
+            <Route path="products">
+              <Route index element={<AdminProducts />} />
+              {/* <Route path=":productId" element={<AdminProduct />} />
+              <Route path="create" element={<CreateNewProduct />} /> */}
             </Route>
           </Route>
         </Route>
