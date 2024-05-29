@@ -52,8 +52,8 @@ export default function AdminProduct() {
     return (
         <>
             <GoBack />
-            <h1 className="text-2xl font-bold mb-4">Edit an user</h1>
-            <p className="text-gray-500">You can modify user information</p>
+            <h1 className="text-2xl font-bold mb-4">Edit a product</h1>
+            <p className="text-gray-500">You can modify product information</p>
             <form className="w-full" onSubmit={e => onSubmit(e)}>
                 <div className="space-y-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
