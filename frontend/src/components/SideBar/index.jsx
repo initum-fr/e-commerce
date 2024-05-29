@@ -12,10 +12,12 @@
   }
   ```
 */
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const sortOptions = [
     { name: 'Most Popular', href: '#', current: true },
@@ -23,13 +25,6 @@ const sortOptions = [
     { name: 'Newest', href: '#', current: false },
     { name: 'Price: Low to High', href: '#', current: false },
     { name: 'Price: High to Low', href: '#', current: false },
-]
-const subCategories = [
-    { name: 'Totes', href: '#' },
-    { name: 'Backpacks', href: '#' },
-    { name: 'Travel Bags', href: '#' },
-    { name: 'Hip Bags', href: '#' },
-    { name: 'Laptop Sleeves', href: '#' },
 ]
 const filters = [
     {
@@ -76,6 +71,12 @@ function classNames(...classes) {
 // eslint-disable-next-line react/prop-types
 export default function SideBar({ children }) {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+    const [subCategories, setSubCategories] = useState([])
+    useEffect(() => {
+        axios.get('http://localhost:8000/category')
+            .then((response) => setSubCategories(response.data))
+            .catch((error) => console.error(error))
+    }, [])
 
     return (
         <div className="bg-white">
@@ -124,9 +125,9 @@ export default function SideBar({ children }) {
                                         <ul role="list" className="px-2 py-3 font-medium text-gray-900">
                                             {subCategories.map((category) => (
                                                 <li key={category.name}>
-                                                    <a href={category.href} className="block px-2 py-3">
+                                                    <Link to={`products/` + category.name} className="block px-2 py-3">
                                                         {category.name}
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             ))}
                                         </ul>
@@ -255,7 +256,7 @@ export default function SideBar({ children }) {
                             <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
                                 {subCategories.map((category) => (
                                     <li key={category.name}>
-                                        <a href={category.href}>{category.name}</a>
+                                        <Link to={`products/` + category.name}>{category.name}</Link>
                                     </li>
                                 ))}
                             </ul>
