@@ -89,7 +89,7 @@ export default function AdminProducts() {
                                         <div className="text-sm text-gray-900">{product._id}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <img src={product.image} alt={product.name} className="h-20 w-20 rounded-full" />
+                                        {product.image ? <img src={product.image} alt={product.name} className="h-20 w-20 rounded-full" /> : <img src="https://via.placeholder.com/150" alt={product.name} className="h-20 w-20 rounded-full" />}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-500">{product.name}</div>
