@@ -23,7 +23,7 @@ export default function AdminProducts() {
                 setLoading(false)
             })
             .catch((error) => {
-                console.log(error)
+                alert('Error: ' + error.response.data.message)
             })
 
         axios.get('http://localhost:8000/category')
@@ -31,7 +31,8 @@ export default function AdminProducts() {
                 setCategories(res.data)
             })
             .catch((error) => {
-                console.log(error)
+                alert('Error: ' + error.response.data.message)
+
             })
     }, [])
 

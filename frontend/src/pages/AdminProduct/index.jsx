@@ -24,14 +24,14 @@ export default function AdminProduct() {
                 setProduct(response.data)
             })
             .catch((error) => {
-                console.log(error.message)
+                alert('Error: ' + error.response.data.message)
             })
         axios.get('http://localhost:8000/category')
             .then((res) => {
                 setCategories(res.data)
             })
             .catch((error) => {
-                console.log(error)
+                alert('Error: ' + error.response.data.message)
             })
     }, [])
     const onSubmit = (e) => {

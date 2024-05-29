@@ -33,8 +33,8 @@ export default function AdminUser() {
             .then(() => {
                 navigate('../')
             })
-            .catch((err) => {
-                alert(err)
+            .catch((error) => {
+                alert('Error: ' + error.response.data.message)
             })
     }
     return (

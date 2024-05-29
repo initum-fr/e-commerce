@@ -25,7 +25,7 @@ export default function AdminUsers() {
                 setLoading(false)
             })
             .catch((error) => {
-                console.log(error)
+                alert('Error: ' + error.response.data.message)
             })
     })
 
@@ -36,7 +36,8 @@ export default function AdminUsers() {
                 setUsers(users.filter((u) => u._id !== user._id))
             })
             .catch((error) => {
-                console.log(error)
+                alert('Error: ' + error.response.data.message)
+
             })
     }
     return (
