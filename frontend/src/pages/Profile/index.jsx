@@ -15,9 +15,18 @@ export default function Profile() {
     const onSubmitNewInfos = (e) => {
         e.preventDefault();
         console.log("onSubmitNewInfos", userInformations)
+        if (userInformations.password === "") {
+            delete userInformations.password
+        }
         axios.put(`http://localhost:8000/users/${auth.user.id}`, userInformations, { headers: { Authorization: authHeader } })
             .then((response) => {
                 console.log(response)
+                if (response.status === 200) {
+                    alert('Profile updated successfully! Redirecting to login page.')
+                    navigate('/logout')
+                } else {
+                    alert('Error: ' + response.data.message)
+                }
             })
             .catch((err) => {
                 alert(err)
@@ -27,6 +36,7 @@ export default function Profile() {
         axios.get(`http://localhost:8000/users/${auth.user.id}`, { headers: { Authorization: authHeader } })
             .then((response) => {
                 console.log(response.data)
+                delete response.data.password
                 setUserInformations(response.data)
             })
             .catch(() => {
