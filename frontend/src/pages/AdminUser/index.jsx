@@ -84,6 +84,22 @@ export default function AdminUser() {
                                 />
                             </div>
                         </div>
+                        <div className="sm:col-span-4">
+                            <Label htmlFor="admin" label="Role" />
+                            <div className="mt-2">
+                                <select
+                                    id="admin"
+                                    name="admin"
+                                    autoComplete="admin"
+                                    value={userInformations.admin}
+                                    onChange={(e) => setUserInformations({ ...userInformations, admin: e.target.value })}
+                                    className="block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                >
+                                    <option value="false">User</option>
+                                    <option value="true">Admin</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
@@ -97,7 +113,7 @@ export default function AdminUser() {
                         Save
                     </button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
