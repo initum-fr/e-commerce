@@ -113,12 +113,18 @@ export default function AdminProduct() {
                         <div className="sm:col-span-4">
                             <Label htmlFor="category" label="Category" />
                             <div className="mt-2">
-                                <select name="category" id="category" className="border border-gray-300 rounded-md px-3 py-2">
+                                <select
+                                    id="category"
+                                    name="category"
+                                    autoComplete="category"
+                                    className="border border-gray-300 rounded-md px-3 py-2"
+                                    value={product.category}
+                                    onChange={(e) => setProduct({ ...product, category: e.target.value })}
+                                >
                                     {categories.map((category) => (
-                                        product.category == category._id ?
-                                            <option key={category._id} value={category._id} selected>{category.name}</option>
-                                            :
-                                            <option key={category._id} value={category._id}>{category.name}</option>
+                                        <option key={category._id} value={category._id}>
+                                            {category.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
