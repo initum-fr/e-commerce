@@ -33,10 +33,10 @@ exports.login = (req, res) => {
                     role: user.admin ? 'admin' : 'user'
                 })
             } else {
-                res.status(401).json({ error: 'Authentication failded!' })
+                res.status(401).json({ message: 'Authentication failded!' })
             }
         })
-        .catch(error => res.status(500).json({ error: 'Authentication failded!' }))
+        .catch(error => res.status(500).json({ error, message: 'Authentication failded!' }))
 }
 
 exports.verify = (req, res) => {
@@ -49,12 +49,12 @@ exports.verify = (req, res) => {
                 if (user) {
                     res.status(200).json({ role: user.admin ? 'admin' : 'user' })
                 } else {
-                    res.status(404).json({ error: 'User not found!' })
+                    res.status(404).json({ message: 'User not found!' })
                 }
             })
-            .catch(error => res.status(500).json({ error: 'User not found!' }))
+            .catch(error => res.status(500).json({ error, message: 'User not found!' }))
     } catch (error) {
-        res.status(401).json({ error: 'Invalid token!' })
+        res.status(401).json({ error, message: 'Invalid token!' })
     }
 
 }
