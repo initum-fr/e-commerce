@@ -7,6 +7,7 @@ import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
 
 // axios
 import axios from "axios"
+import GoBack from "../../components/GoBack"
 
 export default function AdminProducts() {
     const authHeader = useAuthHeader()
@@ -46,6 +47,7 @@ export default function AdminProducts() {
     }
     return (
         <>
+            <GoBack />
             <h1 className="text-2xl font-bold mb-4">Admin Products</h1>
             <p className="text-gray-500">List of all products in the admin panel.</p>
             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mt-8 overflow-x-auto">

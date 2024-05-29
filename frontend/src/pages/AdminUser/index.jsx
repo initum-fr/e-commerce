@@ -4,6 +4,7 @@ import Input from "../../components/Input"
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import GoBack from "../../components/GoBack"
 
 export default function AdminUser() {
     const navigate = useNavigate()
@@ -37,7 +38,9 @@ export default function AdminUser() {
             })
     }
     return (
+
         <div className="bg-white py-12 mx-10">
+            <GoBack />
             <h1 className="text-2xl font-bold mb-4">Edit an user</h1>
             <p className="text-gray-500">You can modify user information</p>
             <form className="w-full" onSubmit={e => onSubmitNewInfos(e)}>

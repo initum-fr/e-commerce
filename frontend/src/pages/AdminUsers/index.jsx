@@ -10,6 +10,7 @@ import axios from "axios"
 
 // design imports
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid"
+import GoBack from "../../components/GoBack"
 
 export default function AdminUsers() {
     const authHeader = useAuthHeader()
@@ -40,6 +41,7 @@ export default function AdminUsers() {
     }
     return (
         <>
+            <GoBack />
             <h1 className="text-2xl font-bold mb-4">Admin Users</h1>
             <p className="text-gray-500">List of all users in the admin panel.</p>
             <div className="shadow scroll-m-0 border-b border-gray-200 sm:rounded-lg mt-8 overflow-x-auto">

@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import Label from "../../components/Label";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
+import GoBack from "../../components/GoBack";
 
 
 export default function CreateNewUser() {
@@ -27,7 +28,7 @@ export default function CreateNewUser() {
     }
     return (
         <>
-
+            <GoBack />
             <h2 className="text-2xl font-bold mb-4">Create a new user</h2>
             <p className="text-gray-500">You can create a new user here.</p>
             <form className="w-full" onSubmit={e => onSubmit(e)}>
