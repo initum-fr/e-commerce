@@ -39,7 +39,7 @@ export default function AdminUser() {
     }
     return (
 
-        <div className="bg-white py-12 mx-10">
+        <>
             <GoBack />
             <h1 className="text-2xl font-bold mb-4">Edit an user</h1>
             <p className="text-gray-500">You can modify user information</p>
@@ -117,6 +117,6 @@ export default function AdminUser() {
                     </button>
                 </div>
             </form >
-        </div >
+        </>
     )
 }
