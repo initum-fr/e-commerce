@@ -12,6 +12,7 @@ export default function AdminProducts() {
     const authHeader = useAuthHeader()
 
     const [products, setProducts] = useState([])
+    const [categories, setCategories] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -23,7 +24,15 @@ export default function AdminProducts() {
             .catch((error) => {
                 console.log(error)
             })
-    })
+
+        axios.get('http://localhost:8000/category')
+            .then((res) => {
+                setCategories(res.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }, [])
 
     const onDelete = (product) => {
         axios.delete(`http://localhost:8000/products/${product._id}`, { headers: { Authorization: authHeader } })
@@ -71,40 +80,47 @@ export default function AdminProducts() {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                         {loading ? <h1>Loading...</h1> : products.map((product) => (
+                            <>
 
-                            <tr key={product._ids} >
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{product._id}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <img src={product.image} alt={product.name} className="h-20 w-20 rounded-full" />
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-500">{product.name}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{product.description}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{product.price}€</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{product.category}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-gray-900">{product.inStock}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <Link to={`${product._id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                                            Edit
-                                        </Link>
-                                        <button onClick={() => onDelete(product)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                                < tr key={product._id} >
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{product._id}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <img src={product.image} alt={product.name} className="h-20 w-20 rounded-full" />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-500">{product.name}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{product.description}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{product.price}€</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">
+                                            {categories.map((category) => (
+                                                category._id == product.category && (
+                                                    category.name
+                                                )
+                                            ))}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-gray-900">{product.inStock}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="flex items-center">
+                                            <Link to={`${product._id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                                Edit
+                                            </Link>
+                                            <button onClick={() => onDelete(product)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </>
                         ))}
                     </tbody>
                 </table>

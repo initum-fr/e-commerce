@@ -3,11 +3,23 @@ import Input from "../../components/Input";
 import Label from "../../components/Label";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
+import { useEffect, useState } from "react";
 
 
 export default function CreateNewProduct() {
+    const [categories, setCategories] = useState([])
+    useEffect(() => {
+        axios.get(`http://localhost:8000/category`)
+            .then((response) => {
+                console.log(response.data)
+                setCategories(response.data)
+            }).catch((error) => {
+                console.log(error.message)
+            })
+    }, [])
     const authHeader = useAuthHeader();
     const navigate = useNavigate();
+
     const onSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -25,11 +37,12 @@ export default function CreateNewProduct() {
                 alert('Error: ' + error.response.data.message)
             })
     }
+
     return (
         <>
 
-            <h2 className="text-2xl font-bold mb-4">Create a new user</h2>
-            <p className="text-gray-500">You can create a new user here.</p>
+            <h2 className="text-2xl font-bold mb-4">Create a new product</h2>
+            <p className="text-gray-500">You can create a new product here.</p>
             <form className="w-full" onSubmit={e => onSubmit(e)}>
                 <div className="space-y-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -87,13 +100,11 @@ export default function CreateNewProduct() {
                         <div className="sm:col-span-4">
                             <Label htmlFor="category" label="Category" />
                             <div className="mt-2">
-                                <Input
-                                    type="text"
-                                    name="category"
-                                    id="category"
-                                    placeholder="Category"
-                                    required
-                                />
+                                <select name="category" id="category" className="border border-gray-300 rounded-md px-3 py-2">
+                                    {categories.map((category) => (
+                                        <option key={category._id} value={category._id}>{category.name}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <div className="sm:col-span-4">

@@ -13,6 +13,7 @@ export default function AdminProduct() {
 
     // states
     const [product, setProduct] = useState({})
+    const [categories, setCategories] = useState([])
 
     useEffect(() => {
         axios.get(`http://localhost:8000/products/${productId}`, { headers: { Authorization: authHeader } })
@@ -23,6 +24,13 @@ export default function AdminProduct() {
             })
             .catch((error) => {
                 console.log(error.message)
+            })
+        axios.get('http://localhost:8000/category')
+            .then((res) => {
+                setCategories(res.data)
+            })
+            .catch((error) => {
+                console.log(error)
             })
     }, [])
     const onSubmit = (e) => {
@@ -103,14 +111,14 @@ export default function AdminProduct() {
                         <div className="sm:col-span-4">
                             <Label htmlFor="category" label="Category" />
                             <div className="mt-2">
-                                <Input
-                                    type="text"
-                                    name="category"
-                                    id="category"
-                                    placeholder="Category"
-                                    value={product.category}
-                                    onChange={(e) => setProduct({ ...product, category: e.target.value })}
-                                />
+                                <select name="category" id="category" className="border border-gray-300 rounded-md px-3 py-2">
+                                    {categories.map((category) => (
+                                        product.category == category._id ?
+                                            <option key={category._id} value={category._id} selected>{category.name}</option>
+                                            :
+                                            <option key={category._id} value={category._id}>{category.name}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                         <div className="sm:col-span-4">
