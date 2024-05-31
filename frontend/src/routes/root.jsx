@@ -1,16 +1,33 @@
 import { Link, Outlet } from 'react-router-dom'
 import { UserCircleIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
 
+const navigation = [
+    {
+        name: 'Men',
+        link: 'shop/men'
+    },
+    {
+        name: 'Women',
+        link: 'shop/women'
+    },
+    {
+        name: 'Equipment',
+        link: 'shop/equipment'
+    }
+]
+
 export default function Root() {
     const title = 'GLOVER'
     return (
         <>
             <header className="mx-auto bg-black">
-                <nav className="grid grid-cols-3 items-center h-16 mx-5 text-white">
-                    <div className="justify-self-start">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
+                <nav className="grid grid-cols-3 items-center justify-between h-16 mx-10 text-white">
+                    <div className="justify-self-start gap-x-14 flex">
+                        {navigation.map((nav)=>{
+                            return (
+                                <Link to={nav.link} key={nav.name} className="uppercase hover:underline">{nav.name}</Link>
+                            )
+                        })}
                     </div>
 
                     <div className="justify-self-center text-2xl">
