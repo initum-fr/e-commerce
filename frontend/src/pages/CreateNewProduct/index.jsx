@@ -1,35 +1,38 @@
-import axios from "axios";
-import Input from "../../components/Input";
-import Label from "../../components/Label";
-import { Link, useNavigate } from "react-router-dom";
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
-import { useEffect, useState } from "react";
-import GoBack from "../../components/GoBack";
-
+import axios from 'axios'
+import Input from '../../components/Input'
+import Label from '../../components/Label'
+import { Link, useNavigate } from 'react-router-dom'
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
+import { useEffect, useState } from 'react'
+import GoBack from '../../components/GoBack'
 
 export default function CreateNewProduct() {
     const [categories, setCategories] = useState([])
     useEffect(() => {
-        axios.get(`http://localhost:8000/category`)
+        axios
+            .get(`http://localhost:8000/category`)
             .then((response) => {
                 console.log(response.data)
                 setCategories(response.data)
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 console.log(error.message)
             })
     }, [])
-    const authHeader = useAuthHeader();
-    const navigate = useNavigate();
+    const authHeader = useAuthHeader()
+    const navigate = useNavigate()
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const productData = Object.fromEntries(formData);
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        const productData = Object.fromEntries(formData)
         console.log(productData, authHeader)
-        axios.post(`http://localhost:8000/products`, productData, { headers: { Authorization: authHeader } })
+        axios
+            .post(`http://localhost:8000/products`, productData, {
+                headers: { Authorization: authHeader },
+            })
             .then((response) => {
-                if (response.status === 201)
-                    navigate('../')
+                if (response.status === 201) navigate('../')
                 else {
                     alert('Error: ' + response.data.message)
                 }
@@ -42,9 +45,9 @@ export default function CreateNewProduct() {
     return (
         <>
             <GoBack />
-            <h2 className="text-2xl font-bold mb-4">Create a new product</h2>
+            <h2 className="mb-4 text-2xl font-bold">Create a new product</h2>
             <p className="text-gray-500">You can create a new product here.</p>
-            <form className="w-full" onSubmit={e => onSubmit(e)}>
+            <form className="w-full" onSubmit={(e) => onSubmit(e)}>
                 <div className="space-y-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
@@ -101,9 +104,18 @@ export default function CreateNewProduct() {
                         <div className="sm:col-span-4">
                             <Label htmlFor="category" label="Category" />
                             <div className="mt-2">
-                                <select name="category" id="category" className="border border-gray-300 rounded-md px-3 py-2">
+                                <select
+                                    name="category"
+                                    id="category"
+                                    className="rounded-md border border-gray-300 px-3 py-2"
+                                >
                                     {categories.map((category) => (
-                                        <option key={category._id} value={category._id}>{category.name}</option>
+                                        <option
+                                            key={category._id}
+                                            value={category._id}
+                                        >
+                                            {category.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -123,7 +135,11 @@ export default function CreateNewProduct() {
                     </div>
                 </div>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <Link to="../" type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    <Link
+                        to="../"
+                        type="button"
+                        className="text-sm font-semibold leading-6 text-gray-900"
+                    >
                         Cancel
                     </Link>
                     <button

@@ -1,13 +1,13 @@
 // react
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 // react-auth-kit
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 
 // axios
-import axios from "axios"
-import GoBack from "../../components/GoBack"
+import axios from 'axios'
+import GoBack from '../../components/GoBack'
 
 export default function AdminProducts() {
     const authHeader = useAuthHeader()
@@ -17,7 +17,10 @@ export default function AdminProducts() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        axios.get('http://localhost:8000/products', { headers: { Authorization: authHeader } })
+        axios
+            .get('http://localhost:8000/products', {
+                headers: { Authorization: authHeader },
+            })
             .then((res) => {
                 setProducts(res.data)
                 setLoading(false)
@@ -26,19 +29,22 @@ export default function AdminProducts() {
                 alert('Error: ' + error.response.data.message)
             })
 
-        axios.get('http://localhost:8000/category')
+        axios
+            .get('http://localhost:8000/category')
             .then((res) => {
                 setCategories(res.data)
             })
             .catch((error) => {
                 alert('Error: ' + error.response.data.message)
-
             })
     }, [])
 
     const onDelete = (product) => {
-        axios.delete(`http://localhost:8000/products/${product._id}`, { headers: { Authorization: authHeader } })
-            .then(response => {
+        axios
+            .delete(`http://localhost:8000/products/${product._id}`, {
+                headers: { Authorization: authHeader },
+            })
+            .then((response) => {
                 console.log(response)
                 setProducts(products.filter((p) => p._id !== product._id))
             })
@@ -49,90 +55,152 @@ export default function AdminProducts() {
     return (
         <>
             <GoBack />
-            <h1 className="text-2xl font-bold mb-4">Admin Products</h1>
-            <p className="text-gray-500">List of all products in the admin panel.</p>
-            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mt-8 overflow-x-auto">
+            <h1 className="mb-4 text-2xl font-bold">Admin Products</h1>
+            <p className="text-gray-500">
+                List of all products in the admin panel.
+            </p>
+            <div className="mt-8 overflow-hidden overflow-x-auto border-b border-gray-200 shadow sm:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 ID
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 Image
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 Name
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 Description
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 Price
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 Category
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 Stock
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                            >
                                 Actions
                             </th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {loading ? <h1>Loading...</h1> : products.map((product) => (
-                            <>
-
-                                < tr key={product._id} >
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{product._id}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        {product.image ? <img src={product.image} alt={product.name} className="h-20 w-20 rounded-full" /> : <img src="https://via.placeholder.com/150" alt={product.name} className="h-20 w-20 rounded-full" />}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-500">{product.name}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{product.description}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{product.price}€</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">
-                                            {categories.map((category) => (
-                                                category._id == product.category && (
-                                                    category.name
-                                                )
-                                            ))}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm text-gray-900">{product.inStock}</div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex items-center">
-                                            <Link to={`${product._id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                                                Edit
-                                            </Link>
-                                            <button onClick={() => onDelete(product)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </>
-                        ))}
+                    <tbody className="divide-y divide-gray-200 bg-white">
+                        {loading ? (
+                            <h1>Loading...</h1>
+                        ) : (
+                            products.map((product) => (
+                                <>
+                                    <tr key={product._id}>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <div className="text-sm text-gray-900">
+                                                {product._id}
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            {product.image ? (
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    className="h-20 w-20 rounded-full"
+                                                />
+                                            ) : (
+                                                <img
+                                                    src="https://via.placeholder.com/150"
+                                                    alt={product.name}
+                                                    className="h-20 w-20 rounded-full"
+                                                />
+                                            )}
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <div className="text-sm text-gray-500">
+                                                {product.name}
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <div className="text-sm text-gray-900">
+                                                {product.description}
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <div className="text-sm text-gray-900">
+                                                {product.price}€
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <div className="text-sm text-gray-900">
+                                                {categories.map(
+                                                    (category) =>
+                                                        category._id ==
+                                                            product.category &&
+                                                        category.name
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <div className="text-sm text-gray-900">
+                                                {product.inStock}
+                                            </div>
+                                        </td>
+                                        <td className="whitespace-nowrap px-6 py-4">
+                                            <div className="flex items-center">
+                                                <Link
+                                                    to={`${product._id}`}
+                                                    className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    onClick={() =>
+                                                        onDelete(product)
+                                                    }
+                                                    className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </>
+                            ))
+                        )}
                     </tbody>
                 </table>
-
-            </div >
-            <Link to="create" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded float-right mt-4 mr-10">
+            </div>
+            <Link
+                to="create"
+                className="float-right mr-10 mt-4 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+            >
                 Add Product
             </Link>
-
         </>
     )
 }

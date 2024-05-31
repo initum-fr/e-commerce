@@ -1,10 +1,10 @@
-import { useParams, useNavigate, Link } from "react-router-dom"
-import Label from "../../components/Label"
-import Input from "../../components/Input"
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
-import { useEffect, useState } from "react"
-import axios from "axios"
-import GoBack from "../../components/GoBack"
+import { useParams, useNavigate, Link } from 'react-router-dom'
+import Label from '../../components/Label'
+import Input from '../../components/Input'
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import GoBack from '../../components/GoBack'
 
 export default function AdminProduct() {
     const navigate = useNavigate()
@@ -17,7 +17,10 @@ export default function AdminProduct() {
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/products/${productId}`, { headers: { Authorization: authHeader } })
+        axios
+            .get(`http://localhost:8000/products/${productId}`, {
+                headers: { Authorization: authHeader },
+            })
             .then((response) => {
                 console.log(response.data)
                 delete response.data.password
@@ -26,7 +29,8 @@ export default function AdminProduct() {
             .catch((error) => {
                 alert('Error: ' + error.response.data.message)
             })
-        axios.get('http://localhost:8000/category')
+        axios
+            .get('http://localhost:8000/category')
             .then((res) => {
                 setCategories(res.data)
             })
@@ -35,12 +39,14 @@ export default function AdminProduct() {
             })
     }, [])
     const onSubmit = (e) => {
-        e.preventDefault();
-        console.log("onSubmitNewInfos", product)
-        axios.put(`http://localhost:8000/products/${productId}`, product, { headers: { Authorization: authHeader } })
+        e.preventDefault()
+        console.log('onSubmitNewInfos', product)
+        axios
+            .put(`http://localhost:8000/products/${productId}`, product, {
+                headers: { Authorization: authHeader },
+            })
             .then((response) => {
-                if (response.status === 200)
-                    navigate('../')
+                if (response.status === 200) navigate('../')
                 else {
                     alert('Error: ' + response.data.message)
                 }
@@ -52,9 +58,9 @@ export default function AdminProduct() {
     return (
         <>
             <GoBack />
-            <h1 className="text-2xl font-bold mb-4">Edit a product</h1>
+            <h1 className="mb-4 text-2xl font-bold">Edit a product</h1>
             <p className="text-gray-500">You can modify product information</p>
-            <form className="w-full" onSubmit={e => onSubmit(e)}>
+            <form className="w-full" onSubmit={(e) => onSubmit(e)}>
                 <div className="space-y-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
@@ -66,7 +72,12 @@ export default function AdminProduct() {
                                     id="name"
                                     placeholder="Product Name"
                                     value={product.name}
-                                    onChange={(e) => setProduct({ ...product, name: e.target.value })}
+                                    onChange={(e) =>
+                                        setProduct({
+                                            ...product,
+                                            name: e.target.value,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
@@ -79,7 +90,12 @@ export default function AdminProduct() {
                                     id="description"
                                     placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                                     value={product.description}
-                                    onChange={(e) => setProduct({ ...product, description: e.target.value })}
+                                    onChange={(e) =>
+                                        setProduct({
+                                            ...product,
+                                            description: e.target.value,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
@@ -92,7 +108,12 @@ export default function AdminProduct() {
                                     id="image"
                                     placeholder="https://example.com/image.jpg"
                                     value={product.image}
-                                    onChange={(e) => setProduct({ ...product, image: e.target.value })}
+                                    onChange={(e) =>
+                                        setProduct({
+                                            ...product,
+                                            image: e.target.value,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
@@ -105,7 +126,12 @@ export default function AdminProduct() {
                                     id="price"
                                     placeholder="100"
                                     value={product.price}
-                                    onChange={(e) => setProduct({ ...product, price: e.target.value })}
+                                    onChange={(e) =>
+                                        setProduct({
+                                            ...product,
+                                            price: e.target.value,
+                                        })
+                                    }
                                     step={0.01}
                                 />
                             </div>
@@ -117,12 +143,20 @@ export default function AdminProduct() {
                                     id="category"
                                     name="category"
                                     autoComplete="category"
-                                    className="border border-gray-300 rounded-md px-3 py-2"
+                                    className="rounded-md border border-gray-300 px-3 py-2"
                                     value={product.category}
-                                    onChange={(e) => setProduct({ ...product, category: e.target.value })}
+                                    onChange={(e) =>
+                                        setProduct({
+                                            ...product,
+                                            category: e.target.value,
+                                        })
+                                    }
                                 >
                                     {categories.map((category) => (
-                                        <option key={category._id} value={category._id}>
+                                        <option
+                                            key={category._id}
+                                            value={category._id}
+                                        >
                                             {category.name}
                                         </option>
                                     ))}
@@ -138,14 +172,23 @@ export default function AdminProduct() {
                                     id="stock"
                                     placeholder="100"
                                     value={product.inStock}
-                                    onChange={(e) => setProduct({ ...product, inStock: e.target.value })}
+                                    onChange={(e) =>
+                                        setProduct({
+                                            ...product,
+                                            inStock: e.target.value,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <Link to="../" type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    <Link
+                        to="../"
+                        type="button"
+                        className="text-sm font-semibold leading-6 text-gray-900"
+                    >
                         Cancel
                     </Link>
                     <button

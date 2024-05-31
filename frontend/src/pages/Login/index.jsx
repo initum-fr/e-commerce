@@ -1,27 +1,36 @@
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import axios from 'axios'
+import { Link, useNavigate } from 'react-router-dom'
+import useSignIn from 'react-auth-kit/hooks/useSignIn'
 
 export default function Login() {
     const signIn = useSignIn()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const onLogin = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const userData = Object.fromEntries(formData);
-        axios.post('http://localhost:8000/auth/login', userData)
+        event.preventDefault()
+        const formData = new FormData(event.target)
+        const userData = Object.fromEntries(formData)
+        axios
+            .post('http://localhost:8000/auth/login', userData)
             .then((response) => {
                 if (response.status === 200) {
                     if (
                         signIn({
-                            auth: { token: response.data.token, type: 'Bearer' },
-                            userState: { user: { id: response.data.userId, role: response.data.role } }
+                            auth: {
+                                token: response.data.token,
+                                type: 'Bearer',
+                            },
+                            userState: {
+                                user: {
+                                    id: response.data.userId,
+                                    role: response.data.role,
+                                },
+                            },
                         })
                     ) {
                         if (response.data.role == 'admin') {
-                            navigate('/admin', { replace: true });
+                            navigate('/admin', { replace: true })
                         } else {
-                            navigate('/profile', { replace: true });
+                            navigate('/profile', { replace: true })
                         }
                     } else {
                         document.getElementById('alert-container').innerHTML = `
@@ -32,7 +41,7 @@ export default function Login() {
             .catch(() => {
                 document.getElementById('alert-container').innerHTML = `
                 <p class="text-center text-red-500 text-xs font-bold">Please enter a valid username and password.</p>`
-            });
+            })
     }
     return (
         <>
@@ -49,9 +58,17 @@ export default function Login() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST" onSubmit={e => onLogin(e)}>
+                    <form
+                        className="space-y-6"
+                        action="#"
+                        method="POST"
+                        onSubmit={(e) => onLogin(e)}
+                    >
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label
+                                htmlFor="email"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                            >
                                 Email address
                             </label>
                             <div className="mt-2">
@@ -61,18 +78,24 @@ export default function Login() {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
 
                         <div>
                             <div className="flex items-center justify-between">
-                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label
+                                    htmlFor="password"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
                                     Password
                                 </label>
                                 <div className="text-sm">
-                                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                                    <a
+                                        href="#"
+                                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                    >
                                         Forgot password?
                                     </a>
                                 </div>
@@ -84,13 +107,11 @@ export default function Login() {
                                     type="password"
                                     autoComplete="current-password"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
                         </div>
-                        <div id="alert-container">
-
-                        </div>
+                        <div id="alert-container"></div>
                         <div>
                             <button
                                 type="submit"
@@ -103,7 +124,10 @@ export default function Login() {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Not a member?{' '}
-                        <Link to="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        <Link
+                            to="/register"
+                            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                        >
                             Sign up !
                         </Link>
                     </p>

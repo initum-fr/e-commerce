@@ -1,13 +1,13 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import useSignOut from 'react-auth-kit/hooks/useSignOut'
 
 export default function Logout() {
     const signOut = useSignOut()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     useEffect(() => {
         signOut()
-        navigate('/login', { replace: true });
+        navigate('/login', { replace: true })
     })
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center">

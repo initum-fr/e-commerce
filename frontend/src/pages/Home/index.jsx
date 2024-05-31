@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom'
 
 export default function Home() {
     return (
@@ -10,7 +10,9 @@ export default function Home() {
                             The new boxing brand is there
                         </h1>
                         <p className="mt-4 text-xl text-gray-500">
-                            We are there to help you with your boxing training. We have the best boxing gloves available in the market.
+                            We are there to help you with your boxing training.
+                            We have the best boxing gloves available in the
+                            market.
                         </p>
                     </div>
                     <div>
@@ -83,7 +85,7 @@ export default function Home() {
 
                             <Link
                                 to="/shop"
-                                className="inline-block rounded-md border border-transparent bg-black px-8 py-3 text-center font-medium text-white hover:bg"
+                                className="hover:bg inline-block rounded-md border border-transparent bg-black px-8 py-3 text-center font-medium text-white"
                             >
                                 Shop Collection
                             </Link>

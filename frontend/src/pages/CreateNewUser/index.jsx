@@ -1,23 +1,24 @@
-import axios from "axios";
-import Input from "../../components/Input";
-import Label from "../../components/Label";
-import { Link, useNavigate } from "react-router-dom";
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
-import GoBack from "../../components/GoBack";
-
+import axios from 'axios'
+import Input from '../../components/Input'
+import Label from '../../components/Label'
+import { Link, useNavigate } from 'react-router-dom'
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
+import GoBack from '../../components/GoBack'
 
 export default function CreateNewUser() {
-    const authHeader = useAuthHeader();
-    const navigate = useNavigate();
+    const authHeader = useAuthHeader()
+    const navigate = useNavigate()
     const onSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const userData = Object.fromEntries(formData);
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        const userData = Object.fromEntries(formData)
         console.log(userData, authHeader)
-        axios.post(`http://localhost:8000/users`, userData, { headers: { Authorization: authHeader } })
+        axios
+            .post(`http://localhost:8000/users`, userData, {
+                headers: { Authorization: authHeader },
+            })
             .then((response) => {
-                if (response.status === 201)
-                    navigate('../')
+                if (response.status === 201) navigate('../')
                 else {
                     alert('Error: ' + response.data.message)
                 }
@@ -29,9 +30,9 @@ export default function CreateNewUser() {
     return (
         <>
             <GoBack />
-            <h2 className="text-2xl font-bold mb-4">Create a new user</h2>
+            <h2 className="mb-4 text-2xl font-bold">Create a new user</h2>
             <p className="text-gray-500">You can create a new user here.</p>
-            <form className="w-full" onSubmit={e => onSubmit(e)}>
+            <form className="w-full" onSubmit={(e) => onSubmit(e)}>
                 <div className="space-y-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
@@ -89,14 +90,20 @@ export default function CreateNewUser() {
                             <div className="mt-2">
                                 <select name="admin" id="admin" required>
                                     <option value="true">Admin</option>
-                                    <option value="false" selected>User</option>
+                                    <option value="false" selected>
+                                        User
+                                    </option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <Link to="../" type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    <Link
+                        to="../"
+                        type="button"
+                        className="text-sm font-semibold leading-6 text-gray-900"
+                    >
                         Cancel
                     </Link>
                     <button

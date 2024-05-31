@@ -1,10 +1,10 @@
-import { useParams, useNavigate, Link } from "react-router-dom"
-import Label from "../../components/Label"
-import Input from "../../components/Input"
-import useAuthHeader from "react-auth-kit/hooks/useAuthHeader"
-import { useEffect, useState } from "react"
-import axios from "axios"
-import GoBack from "../../components/GoBack"
+import { useParams, useNavigate, Link } from 'react-router-dom'
+import Label from '../../components/Label'
+import Input from '../../components/Input'
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import GoBack from '../../components/GoBack'
 
 export default function AdminCategory() {
     const navigate = useNavigate()
@@ -16,7 +16,10 @@ export default function AdminCategory() {
     const [category, setCategory] = useState({})
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/category/${categoryId}`, { headers: { Authorization: authHeader } })
+        axios
+            .get(`http://localhost:8000/category/${categoryId}`, {
+                headers: { Authorization: authHeader },
+            })
             .then((response) => {
                 console.log(response.data)
                 setCategory(response.data)
@@ -26,11 +29,13 @@ export default function AdminCategory() {
             })
     }, [])
     const onSubmit = (e) => {
-        e.preventDefault();
-        axios.put(`http://localhost:8000/category/${categoryId}`, category, { headers: { Authorization: authHeader } })
+        e.preventDefault()
+        axios
+            .put(`http://localhost:8000/category/${categoryId}`, category, {
+                headers: { Authorization: authHeader },
+            })
             .then((response) => {
-                if (response.status === 200)
-                    navigate('../')
+                if (response.status === 200) navigate('../')
                 else {
                     alert('Error: ' + response.data.message)
                 }
@@ -42,9 +47,9 @@ export default function AdminCategory() {
     return (
         <>
             <GoBack />
-            <h1 className="text-2xl font-bold mb-4">Edit a category</h1>
+            <h1 className="mb-4 text-2xl font-bold">Edit a category</h1>
             <p className="text-gray-500">You can modify category information</p>
-            <form className="w-full" onSubmit={e => onSubmit(e)}>
+            <form className="w-full" onSubmit={(e) => onSubmit(e)}>
                 <div className="space-y-12">
                     <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div className="sm:col-span-3">
@@ -56,14 +61,23 @@ export default function AdminCategory() {
                                     id="name"
                                     placeholder="Category Name"
                                     value={category.name}
-                                    onChange={(e) => setCategory({ ...category, name: e.target.value })}
+                                    onChange={(e) =>
+                                        setCategory({
+                                            ...category,
+                                            name: e.target.value,
+                                        })
+                                    }
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <Link to="../" type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    <Link
+                        to="../"
+                        type="button"
+                        className="text-sm font-semibold leading-6 text-gray-900"
+                    >
                         Cancel
                     </Link>
                     <button
