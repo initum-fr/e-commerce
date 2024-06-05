@@ -42,7 +42,6 @@ exports.login = (req, res) => {
 
 exports.verify = (req, res) => {
   try {
-    console.log("Verifying");
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwt.verify(token, p.JWT_SECRET);
     User.findOne({ _id: decodedToken.userId })
