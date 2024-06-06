@@ -11,6 +11,7 @@ import axios from 'axios'
 // design imports
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid'
 import GoBack from '../../components/GoBack'
+import Dropdown from '../../components/Dropdown'
 
 export default function AdminUsers() {
     const authHeader = useAuthHeader()
@@ -130,20 +131,21 @@ export default function AdminUsers() {
                                         </div>
                                     </td>
                                     <td className="whitespace-nowrap px-6 py-4">
-                                        <div className="flex items-center">
-                                            <Link
-                                                to={`${user._id}`}
-                                                className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <button
-                                                onClick={() => onDelete(user)}
-                                                className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
-                                            >
-                                                Delete
-                                            </button>
-                                        </div>
+                                        <Dropdown
+                                            options={[
+                                                {
+                                                    to: '',
+                                                    label: 'Edit',
+                                                    onclick: '',
+                                                },
+                                                {
+                                                    to: '',
+                                                    label: 'Delete',
+                                                    onclick: () =>
+                                                        onDelete(user),
+                                                },
+                                            ]}
+                                        />
                                     </td>
                                 </tr>
                             ))
@@ -153,9 +155,9 @@ export default function AdminUsers() {
             </div>
             <Link
                 to="create"
-                className="float-right mr-10 mt-4 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+                className="float-right mt-4 rounded bg-green-800 px-4 py-2 font-bold text-white hover:bg-green-900"
             >
-                Add User
+                Create a new user
             </Link>
         </>
     )

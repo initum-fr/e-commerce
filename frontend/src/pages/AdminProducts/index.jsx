@@ -8,6 +8,7 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 // axios
 import axios from 'axios'
 import GoBack from '../../components/GoBack'
+import Dropdown from '../../components/Dropdown'
 
 export default function AdminProducts() {
     const authHeader = useAuthHeader()
@@ -171,22 +172,21 @@ export default function AdminProducts() {
                                             </div>
                                         </td>
                                         <td className="whitespace-nowrap px-6 py-4">
-                                            <div className="flex items-center">
-                                                <Link
-                                                    to={`${product._id}`}
-                                                    className="mr-2 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-                                                >
-                                                    Edit
-                                                </Link>
-                                                <button
-                                                    onClick={() =>
-                                                        onDelete(product)
-                                                    }
-                                                    className="rounded bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </div>
+                                            <Dropdown
+                                                options={[
+                                                    {
+                                                        to: `${product._id}`,
+                                                        label: 'Edit',
+                                                        onclick: '',
+                                                    },
+                                                    {
+                                                        to: '',
+                                                        label: 'Delete',
+                                                        onclick: () =>
+                                                            onDelete(product),
+                                                    },
+                                                ]}
+                                            />
                                         </td>
                                     </tr>
                                 </>
