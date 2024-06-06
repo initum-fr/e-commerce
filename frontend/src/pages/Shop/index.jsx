@@ -19,7 +19,7 @@ export default function Shop() {
     }, [])
     return (
         <div className="mx-10">
-            <SideBar>
+            <SideBar title="All products">
                 <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     {isLoading ? (
                         <h1>Loading...</h1>
