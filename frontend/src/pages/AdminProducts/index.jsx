@@ -126,7 +126,7 @@ export default function AdminProducts() {
                                                 {product._id}
                                             </div>
                                         </td>
-                                        <td className="whitespace-nowrap px-6 py-4">
+                                        <td className="whitespace-nowrap py-5">
                                             {product.image ? (
                                                 <img
                                                     src={product.image}
