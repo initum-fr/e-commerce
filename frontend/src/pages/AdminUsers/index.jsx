@@ -134,7 +134,7 @@ export default function AdminUsers() {
                                         <Dropdown
                                             options={[
                                                 {
-                                                    to: '',
+                                                    to: `${user._id}`,
                                                     label: 'Edit',
                                                     onclick: '',
                                                 },
