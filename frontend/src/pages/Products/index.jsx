@@ -1,22 +1,47 @@
 import { useEffect, useState } from 'react'
 import SideBar from '../../components/SideBar'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 
-export default function Shop() {
+export default function Products() {
+    const { filter } = useParams()
     const [products, setProducts] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [categories, setCategories] = useState([])
     useEffect(() => {
         setIsLoading(true)
+        axios
+            .get('http://localhost:8000/category')
+            .then((res) => {
+                console.log(res.data)
+                setCategories(res.data)
+            })
+            .catch((error) => {
+                alert('Error: ' + error.response.data.message)
+            })
         axios
             .get('http://localhost:8000/products')
             .then((response) => {
                 setIsLoading(false)
+                console.log(filter)
                 console.log(response.data)
-                setProducts(response.data)
+                if (filter != 'all-products') {
+                    categories.map((category) => {
+                        if (category.name.toLowerCase() === filter) {
+                            setProducts(
+                                response.data.filter(
+                                    (product) =>
+                                        product.category === category._id
+                                )
+                            )
+                        }
+                    })
+                } else {
+                    setProducts(response.data)
+                }
             })
             .catch((error) => console.error(error))
-    }, [])
+    }, [filter])
     return (
         <div className="mx-10">
             <SideBar title="All products">

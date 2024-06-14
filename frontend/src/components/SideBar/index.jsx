@@ -90,7 +90,7 @@ export default function SideBar({ children, title }) {
                                                 <li key={category.name}>
                                                     <Link
                                                         to={
-                                                            `products/` +
+                                                            '../' +
                                                             category.name.toLowerCase()
                                                         }
                                                         className="block px-2 py-3"
@@ -174,7 +174,7 @@ export default function SideBar({ children, title }) {
                                     <li key={category.name}>
                                         <Link
                                             to={
-                                                `products/` +
+                                                '../' +
                                                 category.name.toLowerCase()
                                             }
                                         >

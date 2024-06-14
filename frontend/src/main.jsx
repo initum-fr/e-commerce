@@ -14,7 +14,7 @@ import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 
 // pages import
 import Home from './pages/Home'
-import Shop from './pages/Shop'
+import Products from './pages/Products'
 import Root from './routes/root'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -45,11 +45,15 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Root />}>
             <Route path="*" element={<Error />} />
-            <Route index element={<Navigate to="home" />} />
-            <Route path="home" element={<Home />} />
+            <Route index element={<Navigate to="shop" />} />
             <Route path="shop">
-                <Route index element={<Shop />} />
+                <Route index element={<Home />} />
+                <Route path="products">
+                    <Route index element={<Navigate to="all-products" />} />
+                    <Route path=":filter" element={<Products />} />
+                </Route>
             </Route>
+
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             {/* Only for logged users */}

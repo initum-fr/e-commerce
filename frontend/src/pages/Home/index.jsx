@@ -84,7 +84,7 @@ export default function Home() {
                             </div>
 
                             <Link
-                                to="/shop"
+                                to="products"
                                 className="hover:bg inline-block rounded-md border border-transparent bg-black px-8 py-3 text-center font-medium text-white"
                             >
                                 Shop Collection
