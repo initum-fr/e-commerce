@@ -15,7 +15,7 @@ import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 // pages import
 import Home from './pages/Home'
 import Products from './pages/Products'
-import Root from './routes/root'
+import Root from './routes/root_v2'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Error from './pages/Error'
