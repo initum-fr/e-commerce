@@ -23,6 +23,7 @@ export default function Login() {
                                 user: {
                                     id: response.data.userId,
                                     role: response.data.role,
+                                    username: response.data.username,
                                 },
                             },
                         })
