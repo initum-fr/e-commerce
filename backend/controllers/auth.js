@@ -30,6 +30,7 @@ exports.login = (req, res) => {
             expiresIn: "1h",
           }),
           role: user.admin ? "admin" : "user",
+          username: user.firstname + " " + user.lastname,
         });
       } else {
         res.status(401).json({ message: "Authentication failded!" });
