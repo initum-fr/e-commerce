@@ -1,7 +1,9 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { UserCircleIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
 import Bag from '../components/Bag'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+import C_Popover from '../components/C_Popover'
 
 const navigation = [
     {
@@ -19,6 +21,12 @@ const navigation = [
 ]
 
 export default function Root() {
+    const isAuth = useIsAuthenticated()
+    const location = useLocation()
+
+    useEffect(() => {
+        console.log('refresh')
+    }, [location])
     // const [inBag, setInBag] = useState([
     //     {
     //         id: 1,
@@ -63,9 +71,20 @@ export default function Root() {
                         <Link className="font-bold">{title}</Link>
                     </div>
                     <div className="flex gap-2 justify-self-end">
-                        <Link to="/profile">
-                            <UserCircleIcon className="size-6" />
-                        </Link>
+                        <C_Popover
+                            title={<UserCircleIcon className="size-6" />}
+                            body={
+                                isAuth
+                                    ? [
+                                          {
+                                              title: 'My account',
+                                              link: '/profile',
+                                          },
+                                          { title: 'Logout', link: '/logout' },
+                                      ]
+                                    : [{ title: 'Login', link: '/login' }]
+                            }
+                        ></C_Popover>
                         <button onClick={() => setOpen(true)} className="flex">
                             <ShoppingBagIcon className="size-6" />
                             (0)
