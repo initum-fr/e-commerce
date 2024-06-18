@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import Modal from '../../components/Modal'
+import { ArrowPathIcon } from '@heroicons/react/24/outline'
 
 export default function Register() {
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -189,9 +190,10 @@ export default function Register() {
                                     <a
                                         href="#"
                                         onClick={(e) => genPassword(e)}
-                                        className="font-semibold text-gray-600 hover:text-gray-500"
+                                        className="group flex gap-x-2 font-semibold text-gray-600 hover:text-gray-500"
                                     >
-                                        Generate a new password
+                                        Generate{' '}
+                                        <ArrowPathIcon className="size-5 group-hover:animate-spin" />
                                     </a>
                                 </div>
                             </div>
