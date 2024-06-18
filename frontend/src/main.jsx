@@ -49,8 +49,7 @@ const router = createBrowserRouter(
             <Route path="shop">
                 <Route index element={<Home />} />
                 <Route path="products">
-                    <Route index element={<Navigate to="all-products" />} />
-                    <Route path=":filter" element={<Products />} />
+                    <Route index element={<Products />} />
                 </Route>
             </Route>
 
