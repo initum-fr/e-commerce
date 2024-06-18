@@ -1,56 +1,54 @@
 import axios from 'axios'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { ErrorMessage } from '@hookform/error-message'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import Modal from '../../components/Modal'
 
 export default function Register() {
-    const [password, setPassword] = useState('')
-    const [repassword, setRepassword] = useState('')
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [error, setError] = useState({})
     const navigate = useNavigate()
-    const onRegister = (event) => {
-        event.preventDefault()
-        const formData = new FormData(event.target)
-        const userData = Object.fromEntries(formData)
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        setValue,
+    } = useForm({
+        criteriaMode: 'all',
+    })
+
+    const onRegister = (data) => {
         axios
-            .post('http://localhost:8000/auth/register', userData)
+            .post('http://localhost:8000/auth/register', data)
             .then((response) => {
                 if (response.status == 201) {
                     navigate('/login', { replace: true })
                 }
             })
             .catch((err) => {
-                switch (err.response.status) {
-                    case 400:
-                        document.getElementById('alert-span').innerHTML =
-                            `<p class="text-center text-red-500 text-xs font-bold">All fields are required!</p>`
-                        break
-                    case 409:
-                        document.getElementById('alert-span').innerHTML =
-                            `<p class="text-center text-red-500 text-xs font-bold">User already exists!</p>`
-                        break
-                    default:
-                        document.getElementById('alert-span').innerHTML =
-                            `<p class="text-center text-red-500 text-xs font-bold">An error occurred. Please try again later.</p>`
-                        break
-                }
+                setError({
+                    type: 'error',
+                    title: 'Unable to register!',
+                    message: 'User already exists',
+                })
+                setIsModalOpen(true)
             })
     }
-    const genPassword = (event) => {
-        event.preventDefault()
+    const genPassword = (e) => {
+        e.preventDefault()
         const generatedPassword = `${Math.random().toString(36).slice(-8)}-${Math.random().toString(36).slice(-8)}-${Math.random().toString(36).slice(-8)}`
         document.getElementById('password').type = 'text'
         document.getElementById('repassword').type = 'text'
-        setPassword(generatedPassword)
-        setRepassword(generatedPassword)
+        setValue('password', generatedPassword, { shouldValidate: true })
+        setValue('repassword', generatedPassword, { shouldValidate: true })
     }
     return (
         <>
+            <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} {...error} />
             <div className="flex min-h-full flex-1 flex-col justify-center">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    {/* <img
-                        className="mx-auto h-10 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
-                    /> */}
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         Create your new account
                     </h2>
@@ -59,26 +57,43 @@ export default function Register() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form
                         className="space-y-6"
-                        action="#"
-                        method="POST"
-                        onSubmit={(e) => onRegister(e)}
+                        onSubmit={handleSubmit(onRegister)}
                     >
                         <div className="flex flex-row gap-4">
                             <div>
                                 <label
-                                    htmlFor="fistname"
+                                    htmlFor="firstname"
                                     className="block text-sm font-medium leading-6 text-gray-900"
                                 >
                                     First name
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        id="firstname"
                                         name="firstname"
-                                        type="text"
-                                        autoComplete="firstname"
-                                        required
+                                        {...register('firstname', {
+                                            required: 'First name is required',
+                                        })}
                                         className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                    <ErrorMessage
+                                        errors={errors}
+                                        name="firstname"
+                                        render={({ messages }) => {
+                                            console.log('messages', messages)
+                                            return messages
+                                                ? Object.entries(messages).map(
+                                                      ([type, message]) => (
+                                                          <p
+                                                              key={type}
+                                                              className="mt-2 flex text-sm font-medium leading-6 text-red-700"
+                                                          >
+                                                              <ExclamationTriangleIcon className="mr-2 size-6" />
+                                                              {message}
+                                                          </p>
+                                                      )
+                                                  )
+                                                : null
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -91,12 +106,31 @@ export default function Register() {
                                 </label>
                                 <div className="mt-2">
                                     <input
-                                        id="lastname"
                                         name="lastname"
-                                        type="text"
-                                        autoComplete="lastname"
-                                        required
+                                        {...register('lastname', {
+                                            required: 'Last name is required',
+                                        })}
                                         className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                    <ErrorMessage
+                                        errors={errors}
+                                        name="lastname"
+                                        render={({ messages }) => {
+                                            console.log('messages', messages)
+                                            return messages
+                                                ? Object.entries(messages).map(
+                                                      ([type, message]) => (
+                                                          <p
+                                                              key={type}
+                                                              className="mt-2 flex text-sm font-medium leading-6 text-red-700"
+                                                          >
+                                                              <ExclamationTriangleIcon className="mr-2 size-6" />
+                                                              {message}
+                                                          </p>
+                                                      )
+                                                  )
+                                                : null
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -110,12 +144,35 @@ export default function Register() {
                             </label>
                             <div className="mt-2">
                                 <input
-                                    id="email"
                                     name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
+                                    {...register('email', {
+                                        required: 'Email is required',
+                                        pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                            message: 'Invalid email address',
+                                        },
+                                    })}
                                     className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                                <ErrorMessage
+                                    errors={errors}
+                                    name="email"
+                                    render={({ messages }) => {
+                                        console.log('messages', messages)
+                                        return messages
+                                            ? Object.entries(messages).map(
+                                                  ([type, message]) => (
+                                                      <p
+                                                          key={type}
+                                                          className="mt-2 flex text-sm font-medium leading-6 text-red-700"
+                                                      >
+                                                          <ExclamationTriangleIcon className="mr-2 size-6" />
+                                                          {message}
+                                                      </p>
+                                                  )
+                                              )
+                                            : null
+                                    }}
                                 />
                             </div>
                         </div>
@@ -130,7 +187,7 @@ export default function Register() {
                                 </label>
                                 <div className="text-sm">
                                     <a
-                                        href=""
+                                        href="#"
                                         onClick={(e) => genPassword(e)}
                                         className="font-semibold text-indigo-600 hover:text-indigo-500"
                                     >
@@ -140,16 +197,38 @@ export default function Register() {
                             </div>
                             <div className="mt-2">
                                 <input
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(e.target.value)
-                                    }
-                                    id="password"
                                     name="password"
+                                    id="password"
                                     type="password"
-                                    autoComplete="password"
-                                    required
+                                    {...register('password', {
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 8,
+                                            message:
+                                                'Password must be at least 8 characters',
+                                        },
+                                    })}
                                     className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                                <ErrorMessage
+                                    errors={errors}
+                                    name="password"
+                                    render={({ messages }) => {
+                                        console.log('messages', messages)
+                                        return messages
+                                            ? Object.entries(messages).map(
+                                                  ([type, message]) => (
+                                                      <p
+                                                          key={type}
+                                                          className="mt-2 flex text-sm font-medium leading-6 text-red-700"
+                                                      >
+                                                          <ExclamationTriangleIcon className="mr-2 size-6" />
+                                                          {message}
+                                                      </p>
+                                                  )
+                                              )
+                                            : null
+                                    }}
                                 />
                             </div>
                         </div>
@@ -164,16 +243,38 @@ export default function Register() {
                             </div>
                             <div className="mt-2">
                                 <input
-                                    value={repassword}
-                                    onChange={(e) =>
-                                        setRepassword(e.target.value)
-                                    }
-                                    id="repassword"
                                     name="repassword"
+                                    id="repassword"
                                     type="password"
-                                    autoComplete="repassword"
-                                    required
+                                    {...register('repassword', {
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 8,
+                                            message:
+                                                'Password must be at least 8 characters',
+                                        },
+                                    })}
                                     className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                                <ErrorMessage
+                                    errors={errors}
+                                    name="repassword"
+                                    render={({ messages }) => {
+                                        console.log('messages', messages)
+                                        return messages
+                                            ? Object.entries(messages).map(
+                                                  ([type, message]) => (
+                                                      <p
+                                                          key={type}
+                                                          className="mt-2 flex text-sm font-medium leading-6 text-red-700"
+                                                      >
+                                                          <ExclamationTriangleIcon className="mr-2 size-6" />
+                                                          {message}
+                                                      </p>
+                                                  )
+                                              )
+                                            : null
+                                    }}
                                 />
                             </div>
                         </div>
