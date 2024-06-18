@@ -189,7 +189,7 @@ export default function Register() {
                                     <a
                                         href="#"
                                         onClick={(e) => genPassword(e)}
-                                        className="font-semibold text-indigo-600 hover:text-indigo-500"
+                                        className="font-semibold text-gray-600 hover:text-gray-500"
                                     >
                                         Generate a new password
                                     </a>
@@ -287,7 +287,7 @@ export default function Register() {
                         <div>
                             <button
                                 type="submit"
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="flex w-full justify-center rounded-md bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Sign up
                             </button>
@@ -298,7 +298,7 @@ export default function Register() {
                         Already member?{' '}
                         <Link
                             to="/login"
-                            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                            className="font-semibold leading-6 text-gray-600 hover:text-gray-500"
                         >
                             Sign in !
                         </Link>
