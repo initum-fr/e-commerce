@@ -43,6 +43,7 @@ const store = createStore({
 
 import { createContext } from 'react'
 import { BagProvider } from './utils/context'
+import Checkout from './pages/Checkout'
 
 const BagContext = createContext([])
 
@@ -56,6 +57,9 @@ const router = createBrowserRouter(
                 <Route path="products">
                     <Route index element={<Products />} />
                 </Route>
+            </Route>
+            <Route path="checkout">
+                <Route index element={<Checkout />} />
             </Route>
 
             <Route path="login" element={<Login />} />
