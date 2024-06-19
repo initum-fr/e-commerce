@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import SideBar from '../../components/SideBar'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import ProductQuickView from '../../components/ProductQuickView'
 
 export default function Products() {
     const [products, setProducts] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [productQuickViewOpen, setProductQuickViewOpen] = useState(false)
+    const [selectedProduct, setSelectedProduct] = useState({})
     useEffect(() => {
         setIsLoading(true)
         axios
@@ -18,6 +21,11 @@ export default function Products() {
     }, [])
     return (
         <>
+            <ProductQuickView
+                open={productQuickViewOpen}
+                setOpen={setProductQuickViewOpen}
+                product={selectedProduct}
+            />
             <h3 className="text-2xl font-bold">All products</h3>
 
             <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
@@ -44,7 +52,10 @@ export default function Products() {
                                 <div>
                                     <h3 className="text-sm text-gray-700">
                                         <Link
-                                            to={`/shop/products/${product.id}`}
+                                            onClick={() => {
+                                                setSelectedProduct(product)
+                                                setProductQuickViewOpen(true)
+                                            }}
                                         >
                                             <span
                                                 aria-hidden="true"
