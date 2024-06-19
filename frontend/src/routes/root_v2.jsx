@@ -425,22 +425,42 @@ export default function Root() {
                                 </div>
 
                                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                                    <div className="flow-root">
-                                        <a
-                                            href="#"
-                                            className="-m-2 block p-2 font-medium text-gray-900"
-                                        >
-                                            Sign in
-                                        </a>
-                                    </div>
-                                    <div className="flow-root">
-                                        <a
-                                            href="#"
-                                            className="-m-2 block p-2 font-medium text-gray-900"
-                                        >
-                                            Create account
-                                        </a>
-                                    </div>
+                                    {isAuth ? (
+                                        <div className="flow-root">
+                                            <Link
+                                                onClick={() => setOpen(false)}
+                                                href="/logout"
+                                                className="-m-2 block p-2 font-medium text-gray-900"
+                                            >
+                                                Log out
+                                            </Link>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="flow-root">
+                                                <Link
+                                                    onClick={() =>
+                                                        setOpen(false)
+                                                    }
+                                                    href="/login"
+                                                    className="-m-2 block p-2 font-medium text-gray-900"
+                                                >
+                                                    Sign in
+                                                </Link>
+                                            </div>
+                                            <div className="flow-root">
+                                                <Link
+                                                    onClick={() =>
+                                                        setOpen(false)
+                                                    }
+                                                    href="/register"
+                                                    className="-m-2 block p-2 font-medium text-gray-900"
+                                                >
+                                                    Create account
+                                                </Link>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </DialogPanel>
                         </TransitionChild>
