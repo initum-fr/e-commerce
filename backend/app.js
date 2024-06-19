@@ -4,11 +4,29 @@ const express = require("express");
 // create an express app
 const app = express();
 
-// // import database connection
-const { db } = require("./config/db");
-
 // Middleware which intercept JSON data
 app.use(express.json());
+
+const dotenv = require("dotenv");
+dotenv.config();
+let p = process.env;
+
+const mongoose = require("mongoose");
+
+var connected = false;
+
+mongoose
+  .connect(
+    `mongodb+srv://${p.MONGODB_USER}:${p.MONGODB_PASSWORD}@${p.MONGODB_HOST}/?retryWrites=true&w=majority&appName=${p.MONGODB_APPNAME}`,
+  )
+  .then(() => 
+    connected = true,
+    console.log("Connexion à MongoDB réussie !")
+)
+  .catch(() =>
+    connected = false,
+    console.log("Connexion à MongoDB échouée !")
+  );
 
 // cors middleware
 app.use((req, res, next) => {
@@ -26,7 +44,7 @@ const categoryRoutes = require("./routes/category");
 
 // simple middleware
 app.get("/", (req, res) => {
-  res.json({ message: "Hello World!" });
+  res.json({ message: "Hello World!", connected});
 });
 
 app.use("/auth", authRoutes);
