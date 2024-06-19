@@ -1,7 +1,7 @@
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import {
     Dialog,
     DialogPanel,
@@ -25,6 +25,7 @@ import {
     XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { Link, Outlet, useLocation } from 'react-router-dom'
+import Bag from '../components/Bag'
 
 const navigation = {
     categories: [
@@ -219,6 +220,8 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
+import { BagContext } from '../utils/context'
+
 export default function Root() {
     const isAuth = useIsAuthenticated()
     const location = useLocation()
@@ -228,9 +231,13 @@ export default function Root() {
     useEffect(() => {
         console.log('refresh'), [location]
     })
+    const [isBagOpen, setIsBagOpen] = useState(false)
+    const { inBag } = useContext(BagContext)
 
     return (
         <div className="bg-white">
+            <Bag open={isBagOpen} setOpen={setIsBagOpen} />
+
             {/* Mobile menu */}
             <Transition show={open}>
                 <Dialog className="relative z-50 lg:hidden" onClose={setOpen}>
@@ -692,21 +699,21 @@ export default function Root() {
 
                                 {/* Cart */}
                                 <div className="ml-4 flow-root lg:ml-6">
-                                    <a
-                                        href="#"
+                                    <button
                                         className="group -m-2 flex items-center p-2"
+                                        onClick={() => setIsBagOpen(true)}
                                     >
                                         <ShoppingBagIcon
                                             className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                             aria-hidden="true"
                                         />
                                         <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                                            0
+                                            {inBag.length}
                                         </span>
                                         <span className="sr-only">
                                             items in cart, view bag
                                         </span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>

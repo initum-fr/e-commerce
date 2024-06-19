@@ -41,6 +41,11 @@ const store = createStore({
     cookieSecure: window.location.protocol === 'https:',
 })
 
+import { createContext } from 'react'
+import { BagProvider } from './utils/context'
+
+const BagContext = createContext([])
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Root />}>
@@ -100,7 +105,9 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <AuthProvider store={store}>
-            <RouterProvider router={router} />
+            <BagProvider>
+                <RouterProvider router={router} />
+            </BagProvider>
         </AuthProvider>
     </React.StrictMode>
 )

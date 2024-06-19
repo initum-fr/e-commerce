@@ -5,10 +5,32 @@ import {
     TransitionChild,
 } from '@headlessui/react'
 import { XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline'
+import { useContext } from 'react'
+import { BagContext } from '../../utils/context'
 
 export default function ProductQuickView({ open, setOpen, product }) {
+    const { inBag, setInBag } = useContext(BagContext)
     const addToCart = (product) => {
-        console.log(product)
+        const existingProduct = inBag.find((item) => item._id === product._id)
+        if (existingProduct) {
+            const updatedBag = inBag.map((item) => {
+                if (item._id === product._id) {
+                    return {
+                        ...item,
+                        quantity: item.quantity + 1,
+                    }
+                }
+                return item
+            })
+            setInBag(updatedBag)
+        } else {
+            const newProduct = {
+                ...product,
+                quantity: 1,
+            }
+            setInBag([...inBag, newProduct])
+        }
+        setOpen(false)
     }
 
     return (
