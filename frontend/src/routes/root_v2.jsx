@@ -429,7 +429,7 @@ export default function Root() {
                                         <div className="flow-root">
                                             <Link
                                                 onClick={() => setOpen(false)}
-                                                href="/logout"
+                                                to="/logout"
                                                 className="-m-2 block p-2 font-medium text-gray-900"
                                             >
                                                 Log out
@@ -442,7 +442,7 @@ export default function Root() {
                                                     onClick={() =>
                                                         setOpen(false)
                                                     }
-                                                    href="/login"
+                                                    to="/login"
                                                     className="-m-2 block p-2 font-medium text-gray-900"
                                                 >
                                                     Sign in
@@ -453,7 +453,7 @@ export default function Root() {
                                                     onClick={() =>
                                                         setOpen(false)
                                                     }
-                                                    href="/register"
+                                                    to="/register"
                                                     className="-m-2 block p-2 font-medium text-gray-900"
                                                 >
                                                     Create account
