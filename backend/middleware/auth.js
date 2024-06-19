@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-dotenv.config({ path: "../config/.env" });
+dotenv.config();
 let p = process.env;
 
 const User = require("../models/user");
