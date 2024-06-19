@@ -17,7 +17,7 @@ export default function AdminUser() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8000/users/${userId}`, {
+            .get(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {
@@ -33,9 +33,13 @@ export default function AdminUser() {
         e.preventDefault()
         console.log('onSubmitNewInfos', userInformations)
         axios
-            .put(`http://localhost:8000/users/${userId}`, userInformations, {
-                headers: { Authorization: authHeader },
-            })
+            .put(
+                `${import.meta.env.VITE_API_URL}/users/${userId}`,
+                userInformations,
+                {
+                    headers: { Authorization: authHeader },
+                }
+            )
             .then(() => {
                 navigate('../')
             })

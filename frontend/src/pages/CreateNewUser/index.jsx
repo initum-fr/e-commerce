@@ -14,7 +14,7 @@ export default function CreateNewUser() {
         const userData = Object.fromEntries(formData)
         console.log(userData, authHeader)
         axios
-            .post(`http://localhost:8000/users`, userData, {
+            .post(`${import.meta.env.VITE_API_URL}/users`, userData, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {

@@ -18,7 +18,7 @@ export default function AdminProduct() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8000/products/${productId}`, {
+            .get(`${import.meta.env.VITE_API_URL}/products/${productId}`, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {
@@ -30,7 +30,7 @@ export default function AdminProduct() {
                 alert('Error: ' + error.response.data.message)
             })
         axios
-            .get('http://localhost:8000/category')
+            .get(`${import.meta.env.VITE_API_URL}/category`)
             .then((res) => {
                 setCategories(res.data)
             })
@@ -42,9 +42,13 @@ export default function AdminProduct() {
         e.preventDefault()
         console.log('onSubmitNewInfos', product)
         axios
-            .put(`http://localhost:8000/products/${productId}`, product, {
-                headers: { Authorization: authHeader },
-            })
+            .put(
+                `${import.meta.env.VITE_API_URL}/products/${productId}`,
+                product,
+                {
+                    headers: { Authorization: authHeader },
+                }
+            )
             .then((response) => {
                 if (response.status === 200) navigate('../')
                 else {

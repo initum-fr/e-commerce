@@ -21,7 +21,7 @@ export default function SideBar({ children, title }) {
     const [subCategories, setSubCategories] = useState([])
     useEffect(() => {
         axios
-            .get('http://localhost:8000/category')
+            .get(`${import.meta.env.VITE_API_URL}/category`)
             .then((response) => setSubCategories(response.data))
             .catch((error) => console.error(error))
     }, [])

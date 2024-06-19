@@ -22,7 +22,7 @@ export default function Register() {
 
     const onRegister = (data) => {
         axios
-            .post('http://localhost:8000/auth/register', data)
+            .post(`${import.meta.env.VITE_API_URL}/auth/register`, data)
             .then((response) => {
                 if (response.status == 201) {
                     navigate('/login', { replace: true })

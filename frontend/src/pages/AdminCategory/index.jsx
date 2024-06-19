@@ -17,7 +17,7 @@ export default function AdminCategory() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8000/category/${categoryId}`, {
+            .get(`${import.meta.env.VITE_API_URL}/category/${categoryId}`, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {
@@ -31,9 +31,13 @@ export default function AdminCategory() {
     const onSubmit = (e) => {
         e.preventDefault()
         axios
-            .put(`http://localhost:8000/category/${categoryId}`, category, {
-                headers: { Authorization: authHeader },
-            })
+            .put(
+                `${import.meta.env.VITE_API_URL}/category/${categoryId}`,
+                category,
+                {
+                    headers: { Authorization: authHeader },
+                }
+            )
             .then((response) => {
                 if (response.status === 200) navigate('../')
                 else {

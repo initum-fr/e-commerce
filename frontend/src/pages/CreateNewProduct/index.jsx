@@ -10,7 +10,7 @@ export default function CreateNewProduct() {
     const [categories, setCategories] = useState([])
     useEffect(() => {
         axios
-            .get(`http://localhost:8000/category`)
+            .get(`${import.meta.env.VITE_API_URL}/category`)
             .then((response) => {
                 console.log(response.data)
                 setCategories(response.data)
@@ -28,7 +28,7 @@ export default function CreateNewProduct() {
         const productData = Object.fromEntries(formData)
         console.log(productData, authHeader)
         axios
-            .post(`http://localhost:8000/products`, productData, {
+            .post(`${import.meta.env.VITE_API_URL}/products`, productData, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {

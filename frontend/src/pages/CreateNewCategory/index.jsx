@@ -15,7 +15,7 @@ export default function CreateNewCategory() {
         const formData = new FormData(e.target)
         const categoryData = Object.fromEntries(formData)
         axios
-            .post(`http://localhost:8000/category`, categoryData, {
+            .post(`${import.meta.env.VITE_API_URL}/category`, categoryData, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {

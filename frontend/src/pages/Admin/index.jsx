@@ -32,7 +32,7 @@ export default function Admin() {
     useEffect(() => {
         axios
             .post(
-                'http://localhost:8000/auth/verify',
+                `${import.meta.env.VITE_API_URL}/auth/verify`,
                 {},
                 { headers: { Authorization: authHeader } }
             )

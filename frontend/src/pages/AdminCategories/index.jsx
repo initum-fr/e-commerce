@@ -15,7 +15,7 @@ export default function AdminCategories() {
 
     useEffect(() => {
         axios
-            .get('http://localhost:8000/category')
+            .get(`${import.meta.env.VITE_API_URL}/category`)
             .then((res) => {
                 setCategories(res.data)
                 setLoading(false)
@@ -27,9 +27,12 @@ export default function AdminCategories() {
 
     const onDelete = (category) => {
         axios
-            .delete(`http://localhost:8000/category/${category._id}`, {
-                headers: { Authorization: authHeader },
-            })
+            .delete(
+                `${import.meta.env.VITE_API_URL}/category/${category._id}`,
+                {
+                    headers: { Authorization: authHeader },
+                }
+            )
             .then((response) => {
                 console.log(response)
                 setCategories(categories.filter((c) => c._id !== category._id))

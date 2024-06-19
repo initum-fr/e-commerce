@@ -19,7 +19,7 @@ export default function AdminProducts() {
 
     useEffect(() => {
         axios
-            .get('http://localhost:8000/products', {
+            .get(`${import.meta.env.VITE_API_URL}/products`, {
                 headers: { Authorization: authHeader },
             })
             .then((res) => {
@@ -31,7 +31,7 @@ export default function AdminProducts() {
             })
 
         axios
-            .get('http://localhost:8000/category')
+            .get(`${import.meta.env.VITE_API_URL}/category`)
             .then((res) => {
                 setCategories(res.data)
             })
@@ -42,7 +42,7 @@ export default function AdminProducts() {
 
     const onDelete = (product) => {
         axios
-            .delete(`http://localhost:8000/products/${product._id}`, {
+            .delete(`${import.meta.env.VITE_API_URL}/products/${product._id}`, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {

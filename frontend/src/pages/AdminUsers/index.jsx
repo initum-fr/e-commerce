@@ -21,7 +21,7 @@ export default function AdminUsers() {
 
     useEffect(() => {
         axios
-            .get('http://localhost:8000/users', {
+            .get(`${import.meta.env.VITE_API_URL}/users`, {
                 headers: { Authorization: authHeader },
             })
             .then((res) => {
@@ -35,7 +35,7 @@ export default function AdminUsers() {
 
     const onDelete = (user) => {
         axios
-            .delete(`http://localhost:8000/users/${user._id}`, {
+            .delete(`${import.meta.env.VITE_API_URL}/users/${user._id}`, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {

@@ -12,7 +12,7 @@ export default function Products() {
     useEffect(() => {
         setIsLoading(true)
         axios
-            .get('http://localhost:8000/products')
+            .get(`${import.meta.env.VITE_API_URL}/products`)
             .then((response) => {
                 setIsLoading(false)
                 setProducts(response.data)

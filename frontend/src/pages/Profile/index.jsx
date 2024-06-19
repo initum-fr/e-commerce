@@ -20,7 +20,7 @@ export default function Profile() {
         }
         axios
             .put(
-                `http://localhost:8000/users/${auth.user.id}`,
+                `${import.meta.env.VITE_API_URL}/users/${auth.user.id}`,
                 userInformations,
                 { headers: { Authorization: authHeader } }
             )
@@ -41,7 +41,7 @@ export default function Profile() {
     }
     useEffect(() => {
         axios
-            .get(`http://localhost:8000/users/${auth.user.id}`, {
+            .get(`${import.meta.env.VITE_API_URL}/users/${auth.user.id}`, {
                 headers: { Authorization: authHeader },
             })
             .then((response) => {

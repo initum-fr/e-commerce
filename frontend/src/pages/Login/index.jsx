@@ -21,7 +21,7 @@ export default function Login() {
     })
     const onLogin = (data) => {
         axios
-            .post('http://localhost:8000/auth/login', data)
+            .post(`${import.meta.env.VITE_API_URL}/auth/login`, data)
             .then((response) => {
                 if (response.status === 200) {
                     if (
