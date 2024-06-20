@@ -1,7 +1,26 @@
-import { Field, Label, Switch } from '@headlessui/react'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { BagContext } from '../../utils/context'
+import { useForm } from 'react-hook-form'
 import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { Field, Fieldset, Label, Legend } from '@headlessui/react'
+import {
+    Combobox,
+    ComboboxInput,
+    ComboboxOption,
+    ComboboxOptions,
+} from '@headlessui/react'
+
+// icons
+import VisaIcon from '../../utils/assets/icons/visa-logo.svg'
+import MasterCardIcon from '../../utils/assets/icons/mastercard-logo.svg'
+import GoogleIcon from '../../utils/assets/icons/google-logo.svg'
+import AppleIcon from '../../utils/assets/icons/apple-logo.svg'
+
+// components
+import FormErrorMessage from '../../components/FormErrorMessage'
+import Input from '../../components/Input'
+
+import axios from 'axios'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -9,301 +28,41 @@ function classNames(...classes) {
 
 export default function Checkout() {
     const { inBag, setInBag } = useContext(BagContext)
-    const [agreed, setAgreed] = useState(false)
+    const [addresses, setAddresses] = useState([])
+    const [selectedAddress, setSelectedAddress] = useState()
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        setValue,
+        getValues,
+    } = useForm({
+        criteriaMode: 'all',
+    })
+
+    const onSubmit = (data) => {
+        console.log(data)
+    }
+
+    const onAddressChange = (e) => {
+        const address = e.target.value.split(' ').join('+')
+        axios
+            .get('https://api-adresse.data.gouv.fr/search/?q=' + address)
+            .then((response) => {
+                console.log(response.data.features)
+                setAddresses(response.data.features)
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }
     return (
         <>
-            <div className="grid w-full items-stretch gap-x-12 gap-y-10 rounded-lg border bg-gray-50 p-5 sm:p-10 lg:grid-cols-2 lg:gap-y-0">
-                <div className="divide-y">
-                    <p className="mb-10">
-                        <h4 className="text-xl">Contact information</h4>
-                        <div className="my-4 w-full">
-                            <label
-                                htmlFor="email"
-                                className="block text-sm leading-6 text-gray-900"
-                            >
-                                Email address
-                            </label>
-                            <div className="mt-1">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    autoComplete="email"
-                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                />
-                            </div>
-                        </div>
-                    </p>
-                    <p className="pt-10">
-                        <h4 className="text-xl">Shipping information</h4>
-                        <div className="my-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                            <div>
-                                <label
-                                    htmlFor="first-name"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    First name
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="text"
-                                        name="first-name"
-                                        id="first-name"
-                                        autoComplete="given-name"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="last-name"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Last name
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="text"
-                                        name="last-name"
-                                        id="last-name"
-                                        autoComplete="family-name"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div className="sm:col-span-2">
-                                <label
-                                    htmlFor="company"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Company
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="text"
-                                        name="company"
-                                        id="company"
-                                        autoComplete="organization"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div className="sm:col-span-2">
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Adress
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="text"
-                                        name="text"
-                                        id="text"
-                                        autoComplete="texts"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div className="sm:col-span-2">
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Appartment, suite, etc.
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        autoComplete="email"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    City
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        autoComplete="email"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Country
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        autoComplete="email"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Country
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        autoComplete="email"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Country
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        autoComplete="email"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                            <div className="sm:col-span-2">
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm leading-6 text-gray-900"
-                                >
-                                    Country
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        id="email"
-                                        autoComplete="email"
-                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </p>
-                </div>
-                <div className="grid">
-                    <div>
-                        <h4 className="text-xl">Payment information</h4>
-
-                        <button className="mt-11 flex w-full items-center justify-center rounded-md border border-transparent bg-black px-4 py-2 text-base font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                class="bi bi-apple"
-                                viewBox="0 0 16 16"
-                            >
-                                <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282" />
-                                <path d="M11.182.008C11.148-.03 9.923.023 8.857 1.18c-1.066 1.156-.902 2.482-.878 2.516s1.52.087 2.475-1.258.762-2.391.728-2.43m3.314 11.733c-.048-.096-2.325-1.234-2.113-3.422s1.675-2.789 1.698-2.854-.597-.79-1.254-1.157a3.7 3.7 0 0 0-1.563-.434c-.108-.003-.483-.095-1.254.116-.508.139-1.653.589-1.968.607-.316.018-1.256-.522-2.267-.665-.647-.125-1.333.131-1.824.328-.49.196-1.422.754-2.074 2.237-.652 1.482-.311 3.83-.067 4.56s.625 1.924 1.273 2.796c.576.984 1.34 1.667 1.659 1.899s1.219.386 1.843.067c.502-.308 1.408-.485 1.766-.472.357.013 1.061.154 1.782.539.571.197 1.111.115 1.652-.105.541-.221 1.324-1.059 2.238-2.758q.52-1.185.473-1.282" />
-                            </svg>
-                            Pay
-                        </button>
-                        <div className="mt-4 rounded-lg border bg-white p-6">
-                            <div className="relative flex-1">
-                                <div className="">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-base font-semibold text-gray-900">
-                                            Credit card
-                                        </h3>
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            fill="currentColor"
-                                            class="bi bi-credit-card"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
-                                            <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
-                                        </svg>
-                                    </div>
-                                    <div className="mt-4">
-                                        <label
-                                            htmlFor="card-number"
-                                            className="block text-sm font-semibold text-gray-900"
-                                        >
-                                            Card number
-                                        </label>
-                                        <div className="mt-1">
-                                            <input
-                                                type="text"
-                                                name="card-number"
-                                                id="card-number"
-                                                autoComplete="cc-number"
-                                                className="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                                        <div>
-                                            <label
-                                                htmlFor="card-expiration-date"
-                                                className="block text-sm font-semibold text-gray-900"
-                                            >
-                                                Expiration date
-                                            </label>
-                                            <div className="mt-1">
-                                                <input
-                                                    type="text"
-                                                    name="card-expiration-date"
-                                                    id="card-expiration-date"
-                                                    autoComplete="cc-exp"
-                                                    className="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <label
-                                                htmlFor="card-cvc"
-                                                className="block text-sm font-semibold text-gray-900"
-                                            >
-                                                CVC
-                                            </label>
-                                            <div className="mt-1">
-                                                <input
-                                                    type="text"
-                                                    name="card-cvc"
-                                                    id="card-cvc"
-                                                    autoComplete="cc-csc"
-                                                    className="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <form
+                className="grid w-full items-stretch gap-x-12 gap-y-10 rounded-lg border bg-gray-50 p-5 sm:p-10 lg:grid-cols-2 lg:gap-y-0"
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <div className="grid gap-y-10">
                     <div>
                         <h4 className="text-xl">Order summary</h4>
                         <div className="mt-4 rounded-lg border bg-white p-6">
@@ -483,8 +242,243 @@ export default function Checkout() {
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <h4 className="text-xl">Payment information</h4>
+                        <div className="mt-11 grid gap-x-0 gap-y-6 md:flex md:gap-x-5">
+                            <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-black px-4 py-2 text-base font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                <img
+                                    src={AppleIcon}
+                                    alt="Google Pay"
+                                    className="ml-2 mr-1 w-4"
+                                />
+                                Pay
+                            </button>
+                            <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-black px-4 py-2 text-base font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                Buy with
+                                <img
+                                    src={GoogleIcon}
+                                    alt="Google Pay"
+                                    className="ml-1 w-4"
+                                />
+                                Pay
+                            </button>
+                        </div>
+
+                        <div className="py-10 text-center">
+                            <p>OR</p>
+                        </div>
+                        <div className="mt-4 rounded-lg border bg-white p-6">
+                            <div className="relative flex-1">
+                                <div>
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-base font-semibold text-gray-900">
+                                            Credit card
+                                        </h3>
+                                        <div className="flex">
+                                            <img
+                                                src={MasterCardIcon}
+                                                alt="Visa"
+                                                className="h-8 w-8"
+                                            />
+                                            <img
+                                                src={VisaIcon}
+                                                alt="Visa"
+                                                className="h-8 w-8"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label
+                                            htmlFor="card-number"
+                                            className="block text-sm font-semibold text-gray-900"
+                                        >
+                                            Card number
+                                        </label>
+                                        <div className="mt-1">
+                                            <input
+                                                type="text"
+                                                name="card-number"
+                                                id="card-number"
+                                                autoComplete="cc-number"
+                                                className="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                                        <div>
+                                            <label
+                                                htmlFor="card-expiration-date"
+                                                className="block text-sm font-semibold text-gray-900"
+                                            >
+                                                Expiration date
+                                            </label>
+                                            <div className="mt-1">
+                                                <input
+                                                    type="text"
+                                                    name="card-expiration-date"
+                                                    id="card-expiration-date"
+                                                    autoComplete="cc-exp"
+                                                    className="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label
+                                                htmlFor="card-cvc"
+                                                className="block text-sm font-semibold text-gray-900"
+                                            >
+                                                CVC
+                                            </label>
+                                            <div className="mt-1">
+                                                <input
+                                                    type="text"
+                                                    name="card-cvc"
+                                                    id="card-cvc"
+                                                    autoComplete="cc-csc"
+                                                    className="block w-full rounded-md border-0 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className="mt-6 w-full rounded-md border bg-gray-50 py-2 text-black">
+                                        Pay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div className="space-y-10">
+                    <Fieldset className="space-y-8">
+                        <Legend className="text-xl">Contact information</Legend>
+                        <Field className="my-4 w-full">
+                            <Label
+                                htmlFor="email"
+                                className="block text-sm leading-6 text-gray-900"
+                            >
+                                Email address
+                            </Label>
+                            <div className="mt-1">
+                                <input
+                                    id="email"
+                                    {...register('email', {
+                                        required: 'This field is required',
+                                        pattern: {
+                                            value: /\S+@\S+\.\S+/,
+                                            message: 'Invalid email address',
+                                        },
+                                    })}
+                                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                />
+                                <FormErrorMessage
+                                    name="email"
+                                    errors={errors}
+                                />
+                            </div>
+                        </Field>
+                    </Fieldset>
+                    <Fieldset>
+                        <Label className="text-xl">Shipping information</Label>
+                        <Fieldset className="my-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                            <Field>
+                                <Label
+                                    htmlFor="firstname"
+                                    className="block text-sm leading-6 text-gray-900"
+                                >
+                                    First name
+                                </Label>
+                                <div className="mt-1">
+                                    <input
+                                        name="firstname"
+                                        {...register('firstname', {
+                                            required: 'This field is required',
+                                        })}
+                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                    <FormErrorMessage
+                                        name="firstname"
+                                        errors={errors}
+                                    />
+                                </div>
+                            </Field>
+                            <Field>
+                                <Label
+                                    htmlFor="last-name"
+                                    className="block text-sm leading-6 text-gray-900"
+                                >
+                                    Last name
+                                </Label>
+                                <div className="mt-1">
+                                    <input
+                                        {...register('lastname', {
+                                            required: 'This field is required',
+                                        })}
+                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                    <FormErrorMessage
+                                        name="lastname"
+                                        errors={errors}
+                                    />
+                                </div>
+                            </Field>
+                            {/* Implements Google API there */}
+                            <Field className="sm:col-span-2">
+                                <Label
+                                    htmlFor="address"
+                                    className="block text-sm leading-6 text-gray-900"
+                                >
+                                    Full address
+                                </Label>
+                                <div className="mt-1">
+                                    <input
+                                        id="address"
+                                        {...register('address', {
+                                            required: 'This field is required',
+                                            pattern: {
+                                                value: /^[a-zA-Z0-9\s,'-]*$/,
+                                                message:
+                                                    'Invalid address format',
+                                            },
+                                        })}
+                                        onChange={(e) => onAddressChange(e)}
+                                        className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                    <FormErrorMessage
+                                        name="address"
+                                        errors={errors}
+                                    />
+                                    <div className="mt-2">
+                                        <ul
+                                            className={classNames(
+                                                'absolute rounded-md border border-gray-200 bg-white shadow-lg'
+                                            )}
+                                        >
+                                            {addresses.map((address) => (
+                                                <li
+                                                    key={address.properties.id}
+                                                    className="cursor-pointer px-3.5 py-2 hover:bg-gray-100"
+                                                    onClick={() => {
+                                                        setSelectedAddress(
+                                                            address
+                                                        )
+                                                        setValue(
+                                                            'address',
+                                                            address.properties
+                                                                .label
+                                                        )
+                                                    }}
+                                                >
+                                                    {address.properties.label}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </Field>
+                        </Fieldset>
+                    </Fieldset>
+                </div>
+            </form>
         </>
     )
 }
