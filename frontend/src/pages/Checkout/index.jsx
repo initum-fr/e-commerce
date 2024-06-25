@@ -79,7 +79,7 @@ export default function Checkout() {
                 className="grid w-full items-stretch gap-x-12 gap-y-10 rounded-lg border bg-gray-50 p-5 sm:p-10 lg:grid-cols-2 lg:gap-y-0"
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <div className="grid gap-y-10">
+                <div className="order-last grid gap-y-10 lg:order-first">
                     <div>
                         <h4 className="text-xl">Order summary</h4>
                         <div className="mt-4 rounded-lg border bg-white p-6">
