@@ -14,6 +14,7 @@ let p = process.env;
 const mongoose = require('mongoose');
 
 var connected = false;
+var error = null;
 
 mongoose
   .connect(
@@ -25,6 +26,7 @@ mongoose
   })
   .catch((error) => {
     console.log('Connection failed!', error);
+    error = error;
   });
 
 // cors middleware
@@ -43,7 +45,7 @@ const categoryRoutes = require('./routes/category');
 
 // simple middleware
 app.get('/', (req, res) => {
-  res.json({ message: 'Hello World!', connected });
+  res.json({ message: 'Hello World!', connected, error });
 });
 
 app.use('/auth', authRoutes);
