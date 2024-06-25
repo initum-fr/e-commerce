@@ -13,21 +13,20 @@ let p = process.env;
 
 const mongoose = require('mongoose');
 
-var connected = false;
-var error = null;
-
-mongoose
-  .connect(
-    `mongodb+srv://${p.MONGODB_USER}:${p.MONGODB_PASSWORD}@${p.MONGODB_HOST}/?retryWrites=true&w=majority&appName=${p.MONGODB_APPNAME}`
-  )
-  .then(() => {
-    console.log('Connected to MongoDB!');
-    connected = true;
-  })
-  .catch((error) => {
-    console.log('Connection failed!', error);
-    error = error;
-  });
+app.use((req, res, next) => {
+  mongoose
+    .connect(
+      `mongodb+srv://${p.MONGODB_USER}:${p.MONGODB_PASSWORD}@${p.MONGODB_HOST}/?retryWrites=true&w=majority&appName=${p.MONGODB_APPNAME}`
+    )
+    .then(() => {
+      console.log('Connected to database!');
+      next();
+    })
+    .catch((error) => {
+      console.log('Connection failed!', error);
+      res.status(500).json({ message: 'Connection failed!' });
+    });
+});
 
 // cors middleware
 app.use((req, res, next) => {
@@ -45,7 +44,7 @@ const categoryRoutes = require('./routes/category');
 
 // simple middleware
 app.get('/', (req, res) => {
-  res.json({ message: 'Hello World!', connected, error });
+  res.json({ message: 'Hello World!' });
 });
 
 app.use('/auth', authRoutes);
