@@ -19,16 +19,13 @@ mongoose
   .connect(
     `mongodb+srv://${p.MONGODB_USER}:${p.MONGODB_PASSWORD}@${p.MONGODB_HOST}/?retryWrites=true&w=majority&appName=${p.MONGODB_APPNAME}`
   )
-  .then(
-    () => {
-      console.log('Connected to MongoDB!');
-      connected = true;
-    },
-    (error) => {
-      console.log('Connection to MongoDB failed: ' + error);
-      connected = false;
-    }
-  );
+  .then(() => {
+    console.log('Connected to MongoDB!');
+    connected = true;
+  })
+  .catch((error) => {
+    console.log('Connection failed!', error);
+  });
 
 // cors middleware
 app.use((req, res, next) => {
