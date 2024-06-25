@@ -33,8 +33,14 @@ export default function Login() {
                             userState: {
                                 user: {
                                     id: response.data.userId,
+                                    email: response.data.email,
+                                    firstname: response.data.firstname,
+                                    lastname: response.data.lastname,
                                     role: response.data.role,
-                                    username: response.data.username,
+                                    username:
+                                        response.data.firstname +
+                                        ' ' +
+                                        response.data.lastname,
                                 },
                             },
                         })
