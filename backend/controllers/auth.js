@@ -29,8 +29,10 @@ exports.login = (req, res) => {
           token: jwt.sign({ userId: user._id }, p.JWT_SECRET, {
             expiresIn: "1h",
           }),
+          firstname : user.firstname,
+          lastname : user.lastname,
+          email : user.email,
           role: user.admin ? "admin" : "user",
-          username: user.firstname + " " + user.lastname,
         });
       } else {
         res.status(401).json({ message: "Authentication failded!" });
