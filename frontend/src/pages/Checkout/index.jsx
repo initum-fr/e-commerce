@@ -56,6 +56,19 @@ export default function Checkout() {
                 console.error(error)
             })
     }
+
+    const handleValidateAddress = (address) => {
+        setValue('address', address.properties.label, { shouldValidate: true })
+        setValue('house_number', address.properties.housenumber, {
+            shouldValidate: true,
+        })
+        setValue('house_street', address.properties.street, {
+            shouldValidate: true,
+        })
+        setValue('city', address.properties.city, { shouldValidate: true })
+        setValue('zip', address.properties.postcode, { shouldValidate: true })
+        setAddresses([])
+    }
     return (
         <>
             <form
@@ -379,8 +392,8 @@ export default function Checkout() {
                     </Fieldset>
                     <Fieldset>
                         <Label className="text-xl">Shipping information</Label>
-                        <Fieldset className="my-4 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                            <Field>
+                        <Fieldset className="my-4 grid place-items-stretch gap-x-8 gap-y-6 sm:grid-cols-2">
+                            <Field className="col-span-2 sm:col-span-1">
                                 <Label
                                     htmlFor="firstname"
                                     className="block text-sm leading-6 text-gray-900"
@@ -401,7 +414,7 @@ export default function Checkout() {
                                     />
                                 </div>
                             </Field>
-                            <Field>
+                            <Field className="col-span-2 sm:col-span-1">
                                 <Label
                                     htmlFor="last-name"
                                     className="block text-sm leading-6 text-gray-900"
@@ -422,7 +435,7 @@ export default function Checkout() {
                                 </div>
                             </Field>
                             {/* Implements Google API there */}
-                            <Field className="sm:col-span-2">
+                            <Field className="col-span-2">
                                 <Label
                                     htmlFor="address"
                                     className="block text-sm leading-6 text-gray-900"
@@ -434,11 +447,6 @@ export default function Checkout() {
                                         id="address"
                                         {...register('address', {
                                             required: 'This field is required',
-                                            pattern: {
-                                                value: /^[a-zA-Z0-9\s,'-]*$/,
-                                                message:
-                                                    'Invalid address format',
-                                            },
                                         })}
                                         onChange={(e) => onAddressChange(e)}
                                         className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -458,13 +466,8 @@ export default function Checkout() {
                                                     key={address.properties.id}
                                                     className="cursor-pointer px-3.5 py-2 hover:bg-gray-100"
                                                     onClick={() => {
-                                                        setSelectedAddress(
+                                                        handleValidateAddress(
                                                             address
-                                                        )
-                                                        setValue(
-                                                            'address',
-                                                            address.properties
-                                                                .label
                                                         )
                                                     }}
                                                 >
@@ -474,6 +477,109 @@ export default function Checkout() {
                                         </ul>
                                     </div>
                                 </div>
+                            </Field>
+
+                            <Field className="col-span-2 grid grid-cols-12 gap-x-2">
+                                <Field className="col-span-2">
+                                    <Label
+                                        htmlFor="house_number"
+                                        className="block text-sm leading-6 text-gray-900"
+                                    >
+                                        N°
+                                    </Label>
+                                    <div className="mt-1">
+                                        <input
+                                            type="number"
+                                            {...register('house_number', {
+                                                required:
+                                                    'This field is required',
+                                                pattern: {
+                                                    value: /^[0-9]*$/,
+                                                    message:
+                                                        'Invalid number format',
+                                                },
+                                            })}
+                                            className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                        <FormErrorMessage
+                                            name="house_number"
+                                            errors={errors}
+                                        />
+                                    </div>
+                                </Field>
+                                <Field className="col-span-10">
+                                    <Label
+                                        htmlFor="house_street"
+                                        className="block text-sm leading-6 text-gray-900"
+                                    >
+                                        Street
+                                    </Label>
+                                    <div className="mt-1">
+                                        <input
+                                            type="text"
+                                            {...register('house_street', {
+                                                required:
+                                                    'This field is required',
+                                                pattern: {
+                                                    value: /^[a-zA-Z0-9\s,'-]*$/,
+                                                    message:
+                                                        'Invalid street format',
+                                                },
+                                            })}
+                                            className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                        <FormErrorMessage
+                                            name="house_street"
+                                            errors={errors}
+                                        />
+                                    </div>
+                                </Field>
+                            </Field>
+                            <Field className="col-span-2 grid grid-cols-2 gap-x-2">
+                                <Field>
+                                    <Label
+                                        htmlFor="address"
+                                        className="block text-sm leading-6 text-gray-900"
+                                    >
+                                        City
+                                    </Label>
+                                    <div className="mt-1">
+                                        <input
+                                            className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            {...register('city', {
+                                                required:
+                                                    'This field is required',
+                                                pattern: {
+                                                    value: /^[a-zA-Z]*$/,
+                                                    message:
+                                                        'Invalid city format',
+                                                },
+                                            })}
+                                        />
+                                    </div>
+                                </Field>
+                                <Field>
+                                    <Label
+                                        htmlFor="zip"
+                                        className="block text-sm leading-6 text-gray-900"
+                                    >
+                                        ZIP
+                                    </Label>
+                                    <div className="mt-1">
+                                        <input
+                                            className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                            {...register('zip', {
+                                                required:
+                                                    'This field is required',
+                                                pattern: {
+                                                    value: /^[0-9]*$/,
+                                                    message:
+                                                        'Invalid zip format',
+                                                },
+                                            })}
+                                        />
+                                    </div>
+                                </Field>
                             </Field>
                         </Fieldset>
                     </Fieldset>
