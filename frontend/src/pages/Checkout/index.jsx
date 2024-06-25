@@ -45,7 +45,7 @@ export default function Checkout() {
     })
 
     const onSubmit = (data) => {
-        console.log(data)
+        console.log({ ...data, inBag: inBag })
     }
 
     const onAddressChange = (e) => {
@@ -537,7 +537,7 @@ export default function Checkout() {
                             <Field className="col-span-2 grid grid-cols-2 gap-x-2">
                                 <Field>
                                     <Label
-                                        htmlFor="address"
+                                        htmlFor="city"
                                         className="block text-sm leading-6 text-gray-900"
                                     >
                                         City
@@ -549,11 +549,15 @@ export default function Checkout() {
                                                 required:
                                                     'This field is required',
                                                 pattern: {
-                                                    value: /^[a-zA-Z]*$/,
+                                                    value: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/g,
                                                     message:
                                                         'Invalid city format',
                                                 },
                                             })}
+                                        />
+                                        <FormErrorMessage
+                                            name="city"
+                                            errors={errors}
                                         />
                                     </div>
                                 </Field>
@@ -576,6 +580,10 @@ export default function Checkout() {
                                                         'Invalid zip format',
                                                 },
                                             })}
+                                        />
+                                        <FormErrorMessage
+                                            name="zip"
+                                            errors={errors}
                                         />
                                     </div>
                                 </Field>
