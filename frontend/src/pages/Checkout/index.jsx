@@ -3,12 +3,6 @@ import { BagContext } from '../../utils/context'
 import { useForm } from 'react-hook-form'
 import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { Field, Fieldset, Label, Legend } from '@headlessui/react'
-import {
-    Combobox,
-    ComboboxInput,
-    ComboboxOption,
-    ComboboxOptions,
-} from '@headlessui/react'
 
 // icons
 import VisaIcon from '../../utils/assets/icons/visa-logo.svg'
@@ -18,18 +12,28 @@ import AppleIcon from '../../utils/assets/icons/apple-logo.svg'
 
 // components
 import FormErrorMessage from '../../components/FormErrorMessage'
-import Input from '../../components/Input'
 
 import axios from 'axios'
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Checkout() {
+    const isAuth = useIsAuthenticated()
+    const auth = useAuthUser()
+    useEffect(() => {
+        document.title = 'Checkout'
+        if (isAuth) {
+            setValue('email', auth.user.email)
+            setValue('firstname', auth.user.firstname)
+            setValue('lastname', auth.user.lastname)
+        }
+    }, [])
     const { inBag, setInBag } = useContext(BagContext)
     const [addresses, setAddresses] = useState([])
-    const [selectedAddress, setSelectedAddress] = useState()
     const {
         register,
         formState: { errors },
@@ -520,11 +524,6 @@ export default function Checkout() {
                                             {...register('house_street', {
                                                 required:
                                                     'This field is required',
-                                                pattern: {
-                                                    value: /^[a-zA-Z0-9\s,'-]*$/,
-                                                    message:
-                                                        'Invalid street format',
-                                                },
                                             })}
                                             className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
