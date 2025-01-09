@@ -51,7 +51,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Root />}>
             <Route path="*" element={<Error />} />
-            <Route index element={<Navigate to="shop" />} />
+            <Route index element={<Navigate to="shop/products" />} />
             <Route path="shop">
                 <Route index element={<Home />} />
                 <Route path="products">
