@@ -3,6 +3,8 @@ import { BagContext } from '../../utils/context'
 import { useForm } from 'react-hook-form'
 import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { Field, Fieldset, Label, Legend } from '@headlessui/react'
+import Modal from '../../components/Modal'
+import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 
 // icons
 import VisaIcon from '../../utils/assets/icons/visa-logo.svg'
@@ -22,8 +24,19 @@ function classNames(...classes) {
 }
 
 export default function Checkout() {
+    // stripe
+    const stripe = useStripe()
+    const elements = useElements()
+    const [message, setMessage] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const paymentElementOptions = {
+        layout: 'accordion',
+    }
+
     const isAuth = useIsAuthenticated()
     const auth = useAuthUser()
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [modalInfo, setModalInfo] = useState({})
     useEffect(() => {
         document.title = 'Checkout'
         if (isAuth) {
@@ -34,6 +47,7 @@ export default function Checkout() {
     }, [])
     const { inBag, setInBag } = useContext(BagContext)
     const [addresses, setAddresses] = useState([])
+
     const {
         register,
         formState: { errors },
@@ -44,8 +58,45 @@ export default function Checkout() {
         criteriaMode: 'all',
     })
 
-    const onSubmit = (data) => {
-        console.log(data)
+    const onSubmit = async (data) => {
+        if (inBag.length <= 0) {
+            setModalInfo({
+                type: 'error',
+                title: 'Error',
+                message: 'Your bag is empty',
+            })
+            setIsModalOpen(true)
+        } else {
+            console.log(data)
+        }
+        if (!stripe || !elements) {
+            // Stripe.js hasn't yet loaded.
+            // Make sure to disable form submission until Stripe.js has loaded.
+            return
+        }
+
+        setIsLoading(true)
+
+        const { error } = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                // Make sure to change this to your payment completion page
+                return_url: 'http://localhost:3000/complete',
+            },
+        })
+
+        // This point will only be reached if there is an immediate error when
+        // confirming the payment. Otherwise, your customer will be redirected to
+        // your `return_url`. For some payment methods like iDEAL, your customer will
+        // be redirected to an intermediate site first to authorize the payment, then
+        // redirected to the `return_url`.
+        if (error.type === 'card_error' || error.type === 'validation_error') {
+            setMessage(error.message)
+        } else {
+            setMessage('An unexpected error occurred.')
+        }
+
+        setIsLoading(false)
     }
 
     const onAddressChange = (e) => {
@@ -75,6 +126,11 @@ export default function Checkout() {
     }
     return (
         <>
+            <Modal
+                isOpen={isModalOpen}
+                setIsOpen={setIsModalOpen}
+                {...modalInfo}
+            />
             <form
                 className="grid w-full items-stretch gap-x-12 gap-y-10 rounded-lg border bg-gray-50 p-5 sm:p-10 lg:grid-cols-2 lg:gap-y-0"
                 onSubmit={handleSubmit(onSubmit)}
@@ -260,8 +316,26 @@ export default function Checkout() {
                         </div>
                     </div>
                     <div>
-                        <h4 className="text-xl">Payment information</h4>
-                        <div className="mt-11 grid gap-x-0 gap-y-6 md:flex md:gap-x-5">
+                        <h4 className="mb-3 text-xl">Payment information</h4>
+                        <PaymentElement
+                            id="payment-element"
+                            options={paymentElementOptions}
+                        />
+                        <button
+                            disabled={isLoading || !stripe || !elements}
+                            id="submit"
+                        >
+                            <span id="button-text">
+                                {isLoading ? (
+                                    <div className="spinner" id="spinner"></div>
+                                ) : (
+                                    'Pay now'
+                                )}
+                            </span>
+                        </button>
+                        {/* Show any error or success messages */}
+                        {message && <div id="payment-message">{message}</div>}
+                        {/* <div className="mt-11 grid gap-x-0 gap-y-6 md:flex md:gap-x-5">
                             <button className="flex w-full items-center justify-center rounded-md border border-transparent bg-black px-4 py-2 text-base font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2">
                                 <img
                                     src={AppleIcon}
@@ -362,7 +436,7 @@ export default function Checkout() {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="space-y-10">
