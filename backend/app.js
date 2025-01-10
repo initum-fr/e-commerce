@@ -42,6 +42,7 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
 const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
+const stripeRoutes = require('./routes/stripe');
 
 // simple middleware
 app.get('/', (req, res) => {
@@ -52,6 +53,8 @@ app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/users', userRoutes);
 app.use('/category', categoryRoutes);
+
+app.use('/create-payment-intent', stripeRoutes);
 
 // export the express app
 module.exports = app;
