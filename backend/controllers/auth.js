@@ -7,17 +7,36 @@ let p = process.env;
 const User = require('../models/user');
 
 exports.register = (req, res) => {
-  const hash = bcrypt.hashSync(req.body.password, 10);
-  const user = new User({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    email: req.body.email,
-    password: hash,
+  User.findOne({ email: req.body.email }).then((user) => {
+    // Check if user already exists
+    if (user) {
+      res.status(409).json({ message: 'User already exists!' });
+    } else {
+      // Check if password is strong enough
+      if (
+        req.body.password.length < 8 ||
+        req.body.password.length > 30 ||
+        req.body.password.match(/[0-9]/) == null ||
+        req.body.password.match(/[a-z]/) == null ||
+        req.body.password.match(/[$@#&!-]+/) == null
+      ) {
+        return res
+          .status(400)
+          .json({ message: 'Password is not strong enough!' });
+      }
+      const hash = bcrypt.hashSync(req.body.password, 10);
+      const user = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        password: hash,
+      });
+      user
+        .save()
+        .then(() => res.status(201).json({ message: 'User created!' }))
+        .catch(() => res.status(500).json({ message: 'User not created!' }));
+    }
   });
-  user
-    .save()
-    .then(() => res.status(201).json({ message: 'User created!' }))
-    .catch(() => res.status(500).json({ message: 'User not created!' }));
 };
 
 exports.login = (req, res) => {
