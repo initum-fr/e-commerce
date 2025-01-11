@@ -28,6 +28,7 @@ import { useEffect, useState } from 'react'
 
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
+import Complete from './pages/Complete'
 
 const stripePromise = loadStripe(
     'pk_test_51Qfk94BX9xYglzvtnrZEfKG2RzuejFvhfLSdyyb6thQeWRaUSszcB0EcyNRLt0vdGTfCTTXVc21VvKFLYrgfxFlt00J7Pwh5QR'
@@ -57,84 +58,91 @@ export default function App() {
 
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Root />}>
-                    <Route path="*" element={<Error />} />
-                    <Route index element={<Navigate to="shop/products" />} />
-                    <Route path="shop">
-                        <Route index element={<Home />} />
-                        <Route path="products">
-                            <Route index element={<Products />} />
-                        </Route>
-                    </Route>
-                    <Route
-                        path="checkout"
-                        element={
-                            clientSecret && (
-                                <Elements
-                                    options={{
-                                        clientSecret,
-                                        appearance,
-                                        loader,
-                                    }}
-                                    stripe={stripePromise}
-                                >
-                                    <Checkout />
-                                </Elements>
-                            )
-                        }
-                    />
-                    <Route path="login" element={<Login />} />
-                    <Route path="register" element={<Register />} />
-                    {/* Only for logged users */}
-                    <Route element={<AuthOutlet fallbackPath="/login" />}>
-                        <Route path="profile" element={<Profile />} />
-                        {/* Only for admin users */}
-                        <Route element={<AdminRoute />}>
-                            <Route path="admin">
-                                <Route index element={<Admin />} />
-                                <Route path="users">
-                                    <Route index element={<AdminUsers />} />
-                                    <Route
-                                        path=":userId"
-                                        element={<AdminUser />}
-                                    />
-                                    <Route
-                                        path="create"
-                                        element={<CreateNewUser />}
-                                    />
-                                </Route>
+            {clientSecret && (
+                <Elements
+                    options={{
+                        clientSecret,
+                        appearance,
+                        loader,
+                    }}
+                    stripe={stripePromise}
+                >
+                    <Routes>
+                        <Route path="/" element={<Root />}>
+                            <Route path="*" element={<Error />} />
+                            <Route
+                                index
+                                element={<Navigate to="shop/products" />}
+                            />
+                            <Route path="shop">
+                                <Route index element={<Home />} />
                                 <Route path="products">
-                                    <Route index element={<AdminProducts />} />
-                                    <Route
-                                        path=":productId"
-                                        element={<AdminProduct />}
-                                    />
-                                    <Route
-                                        path="create"
-                                        element={<CreateNewProduct />}
-                                    />
-                                </Route>
-                                <Route path="categories">
-                                    <Route
-                                        index
-                                        element={<AdminCategories />}
-                                    />
-                                    <Route
-                                        path=":categoryId"
-                                        element={<AdminCategory />}
-                                    />
-                                    <Route
-                                        path="create"
-                                        element={<CreateNewCategory />}
-                                    />
+                                    <Route index element={<Products />} />
                                 </Route>
                             </Route>
+                            <Route path="checkout" element={<Checkout />} />
+                            <Route path="complete" element={<Complete />} />
+                            <Route path="login" element={<Login />} />
+                            <Route path="register" element={<Register />} />
+                            {/* Only for logged users */}
+                            <Route
+                                element={<AuthOutlet fallbackPath="/login" />}
+                            >
+                                <Route path="profile" element={<Profile />} />
+                                {/* Only for admin users */}
+                                <Route element={<AdminRoute />}>
+                                    <Route path="admin">
+                                        <Route index element={<Admin />} />
+                                        <Route path="users">
+                                            <Route
+                                                index
+                                                element={<AdminUsers />}
+                                            />
+                                            <Route
+                                                path=":userId"
+                                                element={<AdminUser />}
+                                            />
+                                            <Route
+                                                path="create"
+                                                element={<CreateNewUser />}
+                                            />
+                                        </Route>
+                                        <Route path="products">
+                                            <Route
+                                                index
+                                                element={<AdminProducts />}
+                                            />
+                                            <Route
+                                                path=":productId"
+                                                element={<AdminProduct />}
+                                            />
+                                            <Route
+                                                path="create"
+                                                element={<CreateNewProduct />}
+                                            />
+                                        </Route>
+                                        <Route path="categories">
+                                            <Route
+                                                index
+                                                element={<AdminCategories />}
+                                            />
+                                            <Route
+                                                path=":categoryId"
+                                                element={<AdminCategory />}
+                                            />
+                                            <Route
+                                                path="create"
+                                                element={<CreateNewCategory />}
+                                            />
+                                        </Route>
+                                    </Route>
+                                </Route>
+                            </Route>
+                            <Route path="logout" element={<Logout />} />
                         </Route>
-                    </Route>
-                    <Route path="logout" element={<Logout />} />
-                </Route>
-            </Routes>
+                    </Routes>
+                </Elements>
+            )}
         </BrowserRouter>
     )
 }
