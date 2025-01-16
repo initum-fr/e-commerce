@@ -3,7 +3,7 @@ import { BagContext } from '../../utils/context'
 import { useForm } from 'react-hook-form'
 import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { Field, Fieldset, Label, Legend } from '@headlessui/react'
-import Modal from '../../components/Modal'
+import Modal from '../Modal'
 import {
     PaymentElement,
     useStripe,
@@ -12,13 +12,11 @@ import {
 } from '@stripe/react-stripe-js'
 
 // components
-import FormErrorMessage from '../../components/FormErrorMessage'
+import FormErrorMessage from '../FormErrorMessage'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
-import { useNavigate } from 'react-router-dom'
 
 export default function Checkout() {
-    const navigate = useNavigate()
     // stripe
     const stripe = useStripe()
     const elements = useElements()

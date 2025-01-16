@@ -8,7 +8,7 @@ export const BagProvider = ({ children }) => {
         setInBag([])
     }
     const isBagEmpty = () => {
-        return inBag.length === 0
+        return inBag.length <= 0
     }
 
     return (

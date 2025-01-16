@@ -21,136 +21,95 @@ import CreateNewProduct from './pages/CreateNewProduct'
 import AdminProduct from './pages/AdminProduct'
 import AdminCategories from './pages/AdminCategories'
 import CreateNewCategory from './pages/CreateNewCategory'
-import Checkout from './pages/Checkout'
+import Payment from './pages/Payment'
 import AdminCategory from './pages/AdminCategory'
-import { useEffect, useState, useContext } from 'react'
 import { BagContext } from './utils/context'
-
 import { loadStripe } from '@stripe/stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
 import Complete from './pages/Complete'
+import { useContext } from 'react'
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_STRIPE_PUBLIC_KEY}`)
 
 export default function App() {
-    const [clientSecret, setClientSecret] = useState('')
     const { isBagEmpty } = useContext(BagContext)
-
-    useEffect(() => {
-        // Create PaymentIntent as soon as the page loads
-        fetch(`${import.meta.env.VITE_API_URL}/create-payment-intent`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                items: [{ id: 'xl-tshirt', amount: 1000 }],
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => setClientSecret(data.clientSecret))
-    }, [])
-
-    const appearance = {
-        theme: 'stripe',
-    }
-    // Enable the skeleton loader UI for optimal loading.
-    const loader = 'auto'
 
     return (
         <BrowserRouter>
-            {clientSecret && (
-                <Elements
-                    options={{
-                        clientSecret,
-                        appearance,
-                        loader,
-                    }}
-                    stripe={stripePromise}
-                >
-                    <Routes>
-                        <Route path="/" element={<Root />}>
-                            <Route path="*" element={<Error />} />
-                            <Route
-                                index
-                                element={<Navigate to="shop/products" />}
-                            />
-                            <Route path="shop">
-                                <Route index element={<Home />} />
-                                <Route path="products">
-                                    <Route index element={<Products />} />
-                                </Route>
-                            </Route>
-                            <Route
-                                path="checkout"
-                                element={
-                                    isBagEmpty() ? (
-                                        <Navigate to="/shop/products" />
-                                    ) : (
-                                        <Checkout />
-                                    )
-                                }
-                            />
-                            <Route path="complete" element={<Complete />} />
-                            <Route path="login" element={<Login />} />
-                            <Route path="register" element={<Register />} />
-                            {/* Only for logged users */}
-                            <Route
-                                element={<AuthOutlet fallbackPath="/login" />}
-                            >
-                                <Route path="profile" element={<Profile />} />
-                                {/* Only for admin users */}
-                                <Route element={<AdminRoute />}>
-                                    <Route path="admin">
-                                        <Route index element={<Admin />} />
-                                        <Route path="users">
-                                            <Route
-                                                index
-                                                element={<AdminUsers />}
-                                            />
-                                            <Route
-                                                path=":userId"
-                                                element={<AdminUser />}
-                                            />
-                                            <Route
-                                                path="create"
-                                                element={<CreateNewUser />}
-                                            />
-                                        </Route>
-                                        <Route path="products">
-                                            <Route
-                                                index
-                                                element={<AdminProducts />}
-                                            />
-                                            <Route
-                                                path=":productId"
-                                                element={<AdminProduct />}
-                                            />
-                                            <Route
-                                                path="create"
-                                                element={<CreateNewProduct />}
-                                            />
-                                        </Route>
-                                        <Route path="categories">
-                                            <Route
-                                                index
-                                                element={<AdminCategories />}
-                                            />
-                                            <Route
-                                                path=":categoryId"
-                                                element={<AdminCategory />}
-                                            />
-                                            <Route
-                                                path="create"
-                                                element={<CreateNewCategory />}
-                                            />
-                                        </Route>
-                                    </Route>
-                                </Route>
-                            </Route>
-                            <Route path="logout" element={<Logout />} />
+            <Routes>
+                <Route path="/" element={<Root />}>
+                    <Route path="*" element={<Error />} />
+                    <Route index element={<Navigate to="shop/products" />} />
+                    <Route path="shop">
+                        <Route index element={<Home />} />
+                        <Route path="products">
+                            <Route index element={<Products />} />
                         </Route>
-                    </Routes>
-                </Elements>
-            )}
+                    </Route>
+                    <Route
+                        path="checkout"
+                        element={
+                            isBagEmpty() ? (
+                                <Navigate to="/shop/products" />
+                            ) : (
+                                <Payment stripePromise={stripePromise} />
+                            )
+                        }
+                    />
+                    <Route
+                        path="complete"
+                        element={<Complete stripePromise={stripePromise} />}
+                    />
+                    <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
+                    {/* Only for logged users */}
+                    <Route element={<AuthOutlet fallbackPath="/login" />}>
+                        <Route path="profile" element={<Profile />} />
+                        {/* Only for admin users */}
+                        <Route element={<AdminRoute />}>
+                            <Route path="admin">
+                                <Route index element={<Admin />} />
+                                <Route path="users">
+                                    <Route index element={<AdminUsers />} />
+                                    <Route
+                                        path=":userId"
+                                        element={<AdminUser />}
+                                    />
+                                    <Route
+                                        path="create"
+                                        element={<CreateNewUser />}
+                                    />
+                                </Route>
+                                <Route path="products">
+                                    <Route index element={<AdminProducts />} />
+                                    <Route
+                                        path=":productId"
+                                        element={<AdminProduct />}
+                                    />
+                                    <Route
+                                        path="create"
+                                        element={<CreateNewProduct />}
+                                    />
+                                </Route>
+                                <Route path="categories">
+                                    <Route
+                                        index
+                                        element={<AdminCategories />}
+                                    />
+                                    <Route
+                                        path=":categoryId"
+                                        element={<AdminCategory />}
+                                    />
+                                    <Route
+                                        path="create"
+                                        element={<CreateNewCategory />}
+                                    />
+                                </Route>
+                            </Route>
+                        </Route>
+                    </Route>
+                    <Route path="logout" element={<Logout />} />
+                </Route>
+            </Routes>
         </BrowserRouter>
     )
 }
