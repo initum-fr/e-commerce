@@ -30,9 +30,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import Complete from './pages/Complete'
 
-const stripePromise = loadStripe(
-    'pk_test_51Qfk94BX9xYglzvtnrZEfKG2RzuejFvhfLSdyyb6thQeWRaUSszcB0EcyNRLt0vdGTfCTTXVc21VvKFLYrgfxFlt00J7Pwh5QR'
-)
+const stripePromise = loadStripe(`${import.meta.env.VITE_STRIPE_PUBLIC_KEY}`)
 
 export default function App() {
     const [clientSecret, setClientSecret] = useState('')
