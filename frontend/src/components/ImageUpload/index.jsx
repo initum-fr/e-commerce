@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 
-const ImageUpload = ({ onImageUpload }) => {
+export default function ImageUpload({ onImageUpload }) {
     const fileInputRef = useRef(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -160,5 +160,3 @@ const ImageUpload = ({ onImageUpload }) => {
         </div>
     )
 }
-
-export default ImageUpload
