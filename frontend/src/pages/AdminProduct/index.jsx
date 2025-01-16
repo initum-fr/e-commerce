@@ -5,7 +5,7 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import GoBack from '../../components/GoBack'
-import ImageUpload from '../../components/ImageUpload/Index'
+import ImageUpload from '../../components/ImageUpload/index'
 
 export default function AdminProduct() {
     const navigate = useNavigate()
@@ -113,6 +113,7 @@ export default function AdminProduct() {
                                             image: imageUrl,
                                         })
                                     }
+                                    currentImage={product.image}
                                 />
                             </div>
                         </div>
