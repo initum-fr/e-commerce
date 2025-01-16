@@ -94,7 +94,7 @@ export default function CreateNewProduct() {
                         </div>
 
                         <div className="sm:col-span-4">
-                            <Label htmlFor="image" label="Image URL" />
+                            <Label htmlFor="image" label="Product Image" />
                             <div className="mt-2">
                                 <ImageUpload
                                     onImageUpload={(imageUrl) =>
@@ -105,6 +105,19 @@ export default function CreateNewProduct() {
                                     }
                                     currentImage={product.image}
                                 />
+                                {product.image && (
+                                    <div className="mt-4">
+                                        <div className="relative w-48 h-48 group">
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="w-full h-full object-cover rounded-lg shadow-md transition-transform duration-200 ease-in-out group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-200 rounded-lg" />
+                                        </div>
+                                        <p className="mt-2 text-sm text-gray-500">Uploaded image</p>
+                                    </div>
+                                )}
                                 <input 
                                     type="hidden" 
                                     name="image" 
