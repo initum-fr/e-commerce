@@ -7,9 +7,12 @@ export const BagProvider = ({ children }) => {
     const emptyBag = () => {
         setInBag([])
     }
+    const isBagEmpty = () => {
+        return inBag.length === 0
+    }
 
     return (
-        <BagContext.Provider value={{ inBag, emptyBag, setInBag }}>
+        <BagContext.Provider value={{ inBag, emptyBag, setInBag, isBagEmpty }}>
             {children}
         </BagContext.Provider>
     )
