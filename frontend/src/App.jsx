@@ -1,4 +1,3 @@
-// import React from 'react'
 import { Route, Navigate, BrowserRouter, Routes } from 'react-router-dom'
 // import AuthProvider from 'react-auth-kit'
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
@@ -24,7 +23,8 @@ import AdminCategories from './pages/AdminCategories'
 import CreateNewCategory from './pages/CreateNewCategory'
 import Checkout from './pages/Checkout'
 import AdminCategory from './pages/AdminCategory'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { BagContext } from './utils/context'
 
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
@@ -34,6 +34,7 @@ const stripePromise = loadStripe(`${import.meta.env.VITE_STRIPE_PUBLIC_KEY}`)
 
 export default function App() {
     const [clientSecret, setClientSecret] = useState('')
+    const { isBagEmpty } = useContext(BagContext)
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
@@ -78,7 +79,16 @@ export default function App() {
                                     <Route index element={<Products />} />
                                 </Route>
                             </Route>
-                            <Route path="checkout" element={<Checkout />} />
+                            <Route
+                                path="checkout"
+                                element={
+                                    isBagEmpty() ? (
+                                        <Navigate to="/shop/products" />
+                                    ) : (
+                                        <Checkout />
+                                    )
+                                }
+                            />
                             <Route path="complete" element={<Complete />} />
                             <Route path="login" element={<Login />} />
                             <Route path="register" element={<Register />} />
