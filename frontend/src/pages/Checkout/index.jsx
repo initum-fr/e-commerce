@@ -15,8 +15,10 @@ import {
 import FormErrorMessage from '../../components/FormErrorMessage'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
+import { useNavigate } from 'react-router-dom'
 
 export default function Checkout() {
+    const navigate = useNavigate()
     // stripe
     const stripe = useStripe()
     const elements = useElements()
@@ -30,13 +32,14 @@ export default function Checkout() {
     const auth = useAuthUser()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [modalInfo, setModalInfo] = useState({})
+    const { inBag, setInBag } = useContext(BagContext)
+
     useEffect(() => {
         document.title = 'Checkout'
         if (isAuth) {
             setValue('email', auth.user.email)
         }
     }, [])
-    const { inBag, setInBag } = useContext(BagContext)
 
     const {
         register,
@@ -155,7 +158,12 @@ export default function Checkout() {
                                                             </button>
                                                         </div>
                                                         <div className="flex items-center">
-                                                            <button className="text-gray-500">
+                                                            <button
+                                                                className="text-gray-500"
+                                                                onClick={(e) =>
+                                                                    e.preventDefault()
+                                                                }
+                                                            >
                                                                 <span className="sr-only">
                                                                     Increase
                                                                     quantity
@@ -186,7 +194,12 @@ export default function Checkout() {
                                                             <span className="mx-2 text-sm font-semibold text-gray-900">
                                                                 {item.quantity}
                                                             </span>
-                                                            <button className="text-gray-500">
+                                                            <button
+                                                                className="text-gray-500"
+                                                                onClick={(e) =>
+                                                                    e.preventDefault()
+                                                                }
+                                                            >
                                                                 <span className="sr-only">
                                                                     Decrease
                                                                     quantity
@@ -291,7 +304,7 @@ export default function Checkout() {
                         <button
                             disabled={isLoading || !stripe || !elements}
                             id="submit"
-                            className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="mt-3 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                             <span id="button-text">
                                 {isLoading ? (
