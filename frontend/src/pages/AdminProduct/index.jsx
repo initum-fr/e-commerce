@@ -5,6 +5,7 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import GoBack from '../../components/GoBack'
+import ImageUpload from '../../components/ImageUpload/Index'
 
 export default function AdminProduct() {
     const navigate = useNavigate()
@@ -12,7 +13,6 @@ export default function AdminProduct() {
 
     const { productId } = useParams()
 
-    // states
     const [product, setProduct] = useState({})
     const [categories, setCategories] = useState([])
 
@@ -104,18 +104,13 @@ export default function AdminProduct() {
                             </div>
                         </div>
                         <div className="sm:col-span-4">
-                            <Label htmlFor="image" label="Image URL" />
+                            <Label htmlFor="image" label="Product Image" />
                             <div className="mt-2">
-                                <Input
-                                    type="text"
-                                    name="image"
-                                    id="image"
-                                    placeholder="https://example.com/image.jpg"
-                                    value={product.image}
-                                    onChange={(e) =>
+                                <ImageUpload
+                                    onImageUpload={(imageUrl) =>
                                         setProduct({
                                             ...product,
-                                            image: e.target.value,
+                                            image: imageUrl,
                                         })
                                     }
                                 />
