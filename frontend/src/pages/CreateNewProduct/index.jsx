@@ -5,9 +5,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import { useEffect, useState } from 'react'
 import GoBack from '../../components/GoBack'
+import ImageUpload from '../../components/ImageUpload/index'
 
 export default function CreateNewProduct() {
     const [categories, setCategories] = useState([])
+    const [product, setProduct] = useState({
+        name: '',
+        description: '',
+        price: '',
+        category: '',
+        inStock: '',
+        image: ''
+    });
+
     useEffect(() => {
         axios
             .get(`${import.meta.env.VITE_API_URL}/category`)
@@ -26,6 +36,9 @@ export default function CreateNewProduct() {
         e.preventDefault()
         const formData = new FormData(e.target)
         const productData = Object.fromEntries(formData)
+        
+        productData.image = product.image;
+
         console.log(productData, authHeader)
         axios
             .post(`${import.meta.env.VITE_API_URL}/products`, productData, {
@@ -59,6 +72,8 @@ export default function CreateNewProduct() {
                                     id="name"
                                     placeholder="Product Name"
                                     required
+                                    value={product.name}
+                                    onChange={(e) => setProduct({ ...product, name: e.target.value })}
                                 />
                             </div>
                         </div>
@@ -72,6 +87,8 @@ export default function CreateNewProduct() {
                                     id="description"
                                     placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                                     required
+                                    value={product.description}
+                                    onChange={(e) => setProduct({ ...product, description: e.target.value })}
                                 />
                             </div>
                         </div>
@@ -79,12 +96,19 @@ export default function CreateNewProduct() {
                         <div className="sm:col-span-4">
                             <Label htmlFor="image" label="Image URL" />
                             <div className="mt-2">
-                                <Input
-                                    type="text"
-                                    name="image"
-                                    id="image"
-                                    placeholder="https://example.com/image.jpg"
-                                    required
+                                <ImageUpload
+                                    onImageUpload={(imageUrl) =>
+                                        setProduct({
+                                            ...product,
+                                            image: imageUrl,
+                                        })
+                                    }
+                                    currentImage={product.image}
+                                />
+                                <input 
+                                    type="hidden" 
+                                    name="image" 
+                                    value={product.image} 
                                 />
                             </div>
                         </div>
@@ -98,6 +122,8 @@ export default function CreateNewProduct() {
                                     placeholder="0.00"
                                     required
                                     step="0.01"
+                                    value={product.price}
+                                    onChange={(e) => setProduct({ ...product, price: e.target.value })}
                                 />
                             </div>
                         </div>
@@ -108,6 +134,8 @@ export default function CreateNewProduct() {
                                     name="category"
                                     id="category"
                                     className="rounded-md border border-gray-300 px-3 py-2"
+                                    value={product.category}
+                                    onChange={(e) => setProduct({ ...product, category: e.target.value })}
                                 >
                                     {categories.map((category) => (
                                         <option
@@ -129,6 +157,8 @@ export default function CreateNewProduct() {
                                     id="inStock"
                                     placeholder="0"
                                     required
+                                    value={product.inStock}
+                                    onChange={(e) => setProduct({ ...product, inStock: e.target.value })}
                                 />
                             </div>
                         </div>
