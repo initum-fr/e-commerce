@@ -1,6 +1,8 @@
-const stripe = require('stripe')(
-  'sk_test_51Qfk94BX9xYglzvtCEJ9lrNsRaLQXWmW8yJ3fqNQZGJHAn0dCInA3aYU2nvy4NBjP3clNhxRLYZYbB9ysdekT0hz00Muogeb6C'
-);
+const dotenv = require('dotenv');
+dotenv.config();
+let p = process.env;
+
+const stripe = require('stripe')(`${p.STRIPE_SECRET_KEY}`);
 
 const calculateOrderAmount = (items) => {
   // Calculate the order total on the server to prevent
