@@ -1,4 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
+import { BagContext } from '../../utils/context'
+import axios from 'axios'
+import { ShippingAddressElement } from '@stripe/react-stripe-js'
 
 const STATUS_CONTENT_MAP = {
     succeeded: {
@@ -24,9 +27,38 @@ const STATUS_CONTENT_MAP = {
 }
 
 export default function Complete({ stripePromise }) {
+    const { inBag } = useContext(BagContext)
     const [status, setStatus] = useState('default')
     const [intentId, setIntentId] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+
+    const createOrder = async (paymentIntent) => {
+        axios
+            .post(`${import.meta.env.VITE_API_URL}/orders`, {
+                orderItems: inBag,
+                shippingAddress: {
+                    firstname: paymentIntent.shipping.name,
+                    lastname: paymentIntent.shipping.name,
+                    address: paymentIntent.shipping.address.line1,
+                    city: paymentIntent.shipping.address.city,
+                    postalCode: paymentIntent.shipping.address.postal_code,
+                    country: paymentIntent.shipping.address.country,
+                },
+                user: {
+                    email: 'yassanz.contact@gmail.com',
+                },
+                isPaid: true,
+                paidAt: new Date(),
+                paymentMethod: 'Stripe',
+                paymentId: paymentIntent.id,
+            })
+            .then((res) => {
+                console.log(res)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
 
     useEffect(() => {
         if (!stripePromise) {
@@ -47,11 +79,12 @@ export default function Complete({ stripePromise }) {
                         setStatus('default')
                         setIsLoading(false)
                         return
+                    } else {
+                        createOrder(paymentIntent)
+                        setIntentId(paymentIntent.id)
+                        setStatus(paymentIntent.status)
+                        setIsLoading(false)
                     }
-
-                    setIntentId(paymentIntent.id)
-                    setStatus(paymentIntent.status)
-                    setIsLoading(false)
                 })
         })
     }, [stripePromise])

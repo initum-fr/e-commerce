@@ -27,6 +27,7 @@ import { BagContext } from './utils/context'
 import { loadStripe } from '@stripe/stripe-js'
 import Complete from './pages/Complete'
 import { useContext } from 'react'
+import AdminOrders from './pages/AdminOrders'
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_STRIPE_PUBLIC_KEY}`)
 
@@ -103,6 +104,9 @@ export default function App() {
                                         path="create"
                                         element={<CreateNewCategory />}
                                     />
+                                </Route>
+                                <Route path="orders">
+                                    <Route index element={<AdminOrders />} />
                                 </Route>
                             </Route>
                         </Route>

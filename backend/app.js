@@ -49,6 +49,7 @@ const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
 const stripeRoutes = require('./routes/stripe');
 const imageRoutes = require('./routes/image');
+const orderRoutes = require('./routes/order');
 
 // simple middleware
 app.get('/', (req, res) => {
@@ -60,6 +61,7 @@ app.use('/products', productRoutes);
 app.use('/users', userRoutes);
 app.use('/category', categoryRoutes);
 app.use('/images', imageRoutes);
+app.use('/orders', orderRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
