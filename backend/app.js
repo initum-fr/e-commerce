@@ -1,5 +1,6 @@
 // import express
 const express = require('express');
+const path = require('path');
 
 // create an express app
 const app = express();
@@ -11,6 +12,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 let p = process.env;
 
+// import mongoose
 const mongoose = require('mongoose');
 
 app.use((req, res, next) => {
@@ -36,11 +38,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// serve static files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // import routes
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
 const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
+const stripeRoutes = require('./routes/stripe');
+const imageRoutes = require('./routes/image');
 
 // simple middleware
 app.get('/', (req, res) => {
@@ -51,6 +58,15 @@ app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/users', userRoutes);
 app.use('/category', categoryRoutes);
+app.use('/images', imageRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something broke!' });
+});
+
+app.use('/create-payment-intent', stripeRoutes);
 
 // export the express app
 module.exports = app;

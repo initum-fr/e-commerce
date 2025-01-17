@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const uniqueValidator = require("mongoose-unique-validator");
+const uniqueValidator = require('mongoose-unique-validator');
 
 const categorySchema = new mongoose.Schema({
   name: { type: String, required: true, unique: true },
@@ -8,4 +8,4 @@ const categorySchema = new mongoose.Schema({
 
 categorySchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model("Category", categorySchema);
+module.exports = mongoose.model('Category', categorySchema);

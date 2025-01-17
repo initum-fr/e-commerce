@@ -5,6 +5,7 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import GoBack from '../../components/GoBack'
+import ImageUpload from '../../components/ImageUpload/index'
 
 export default function AdminProduct() {
     const navigate = useNavigate()
@@ -12,7 +13,6 @@ export default function AdminProduct() {
 
     const { productId } = useParams()
 
-    // states
     const [product, setProduct] = useState({})
     const [categories, setCategories] = useState([])
 
@@ -104,21 +104,30 @@ export default function AdminProduct() {
                             </div>
                         </div>
                         <div className="sm:col-span-4">
-                            <Label htmlFor="image" label="Image URL" />
+                            <Label htmlFor="image" label="Product Image" />
                             <div className="mt-2">
-                                <Input
-                                    type="text"
-                                    name="image"
-                                    id="image"
-                                    placeholder="https://example.com/image.jpg"
-                                    value={product.image}
-                                    onChange={(e) =>
+                                <ImageUpload
+                                    onImageUpload={(imageUrl) =>
                                         setProduct({
                                             ...product,
-                                            image: e.target.value,
+                                            image: imageUrl,
                                         })
                                     }
+                                    currentImage={product.image}
                                 />
+                                {product.image && (
+                                    <div className="mt-4">
+                                        <div className="relative w-48 h-48 group">
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="w-full h-full object-cover rounded-lg shadow-md transition-transform duration-200 ease-in-out group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-200 rounded-lg" />
+                                        </div>
+                                        <p className="mt-2 text-sm text-gray-500">Uploaded image</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="sm:col-span-4">

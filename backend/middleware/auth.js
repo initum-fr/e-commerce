@@ -1,13 +1,13 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 dotenv.config();
 let p = process.env;
 
-const User = require("../models/user");
+const User = require('../models/user');
 
 const auth = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, p.JWT_SECRET);
     const userId = decodedToken.userId;
     User.findOne({ _id: userId })
@@ -17,14 +17,14 @@ const auth = (req, res, next) => {
         } else {
           res
             .status(401)
-            .json({ error: "You are not authorized to access this resource!" });
+            .json({ error: 'You are not authorized to access this resource!' });
         }
       })
       .catch(() =>
-        res.status(401).json({ error: "You need to be authenticated!" }),
+        res.status(401).json({ error: 'You need to be authenticated!' })
       );
   } catch {
-    res.status(401).json({ error: "You need to be authenticated!" });
+    res.status(401).json({ error: 'You need to be authenticated!' });
   }
 };
 

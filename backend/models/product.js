@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const productModel = mongoose.Schema({
   name: { type: String, required: true },
@@ -8,9 +8,9 @@ const productModel = mongoose.Schema({
   image: { type: String, required: true },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
+    ref: 'Category',
     required: true,
   },
 });
 
-module.exports = mongoose.model("Product", productModel);
+module.exports = mongoose.model('Product', productModel);

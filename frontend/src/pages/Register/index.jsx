@@ -19,7 +19,6 @@ export default function Register() {
     } = useForm({
         criteriaMode: 'all',
     })
-
     const onRegister = (data) => {
         axios
             .post(`${import.meta.env.VITE_API_URL}/auth/register`, data)
@@ -32,7 +31,7 @@ export default function Register() {
                 setError({
                     type: 'error',
                     title: 'Unable to register!',
-                    message: 'User already exists',
+                    message: err.response.data.message,
                 })
                 setIsModalOpen(true)
             })
