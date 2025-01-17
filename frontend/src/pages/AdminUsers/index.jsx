@@ -31,7 +31,7 @@ export default function AdminUsers() {
             .catch((error) => {
                 alert('Error: ' + error.response.data.message)
             })
-    })
+    }, [])
 
     const onDelete = (user) => {
         axios
