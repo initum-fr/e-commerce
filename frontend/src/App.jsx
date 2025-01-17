@@ -28,6 +28,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import Complete from './pages/Complete'
 import { useContext } from 'react'
 import AdminOrders from './pages/AdminOrders'
+import AdminOrder from './pages/AdminOrder'
 
 const stripePromise = loadStripe(`${import.meta.env.VITE_STRIPE_PUBLIC_KEY}`)
 
@@ -107,6 +108,10 @@ export default function App() {
                                 </Route>
                                 <Route path="orders">
                                     <Route index element={<AdminOrders />} />
+                                    <Route
+                                        path=":id"
+                                        element={<AdminOrder />}
+                                    />
                                 </Route>
                             </Route>
                         </Route>
