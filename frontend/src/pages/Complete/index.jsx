@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { BagContext } from '../../utils/context'
 import axios from 'axios'
 import { ShippingAddressElement } from '@stripe/react-stripe-js'
+import { useNavigate } from 'react-router-dom'
 
 const STATUS_CONTENT_MAP = {
     succeeded: {
@@ -31,10 +32,12 @@ export default function Complete({ stripePromise }) {
     const [status, setStatus] = useState('default')
     const [intentId, setIntentId] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+    const navigate = useNavigate()
 
     const createOrder = async (paymentIntent) => {
         axios
             .post(`${import.meta.env.VITE_API_URL}/orders`, {
+                paymentIntentId: paymentIntent.id,
                 orderItems: inBag,
                 shippingAddress: {
                     firstname: paymentIntent.shipping.name,
@@ -54,6 +57,10 @@ export default function Complete({ stripePromise }) {
             })
             .then((res) => {
                 console.log(res)
+
+                setTimeout(() => {
+                    navigate('/')
+                }, 5000)
             })
             .catch((error) => {
                 console.log(error)

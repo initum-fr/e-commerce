@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const orderModel = new mongoose.Schema({
+  paymentIntentId: { type: String, required: true, unique: true },
   orderItems: [
     {
       quantity: { type: Number, required: true },
@@ -30,5 +32,7 @@ const orderModel = new mongoose.Schema({
   deliveredAt: { type: Date },
   createdAt: { type: Date, default: Date.now },
 });
+
+orderModel.plugin(uniqueValidator);
 
 module.exports = mongoose.model('Order', orderModel);
